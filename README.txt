@@ -1,0 +1,1 @@
+V2.2: Tabs use real #hash links as a fallback, so navigation works even in stricter previews. Host index.html over HTTPS for camera/PWA behavior.

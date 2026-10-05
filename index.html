@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10"><title>FORGEFIT V2.2</title>
+<style>
+:root{--bg:#0b0d10;--card:#15191f;--card2:#1c222a;--text:#f5f7fa;--muted:#929ba8;--line:#29313b;--accent:#d7ff4f;--good:#7ce38b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
+main{max-width:720px;margin:auto;padding:18px 16px 110px}.top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}.brand{font-weight:900;letter-spacing:1.5px;font-size:22px}.muted{color:var(--muted)}.small{font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0}
+select,input,textarea,button{font:inherit}select,input,textarea{background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:11px}
+button,.scan{background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:800}.primary{background:var(--accent);color:#10130a;border:0}
+.task{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:flex-start}.task:last-child{border:0}.task input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent)}.time{min-width:48px;font-weight:800}.done .txt{text-decoration:line-through;color:var(--muted)}
+.page{display:none}.page.active{display:block}
+.tabs{position:fixed;z-index:999;bottom:0;left:0;right:0;background:#0d1014;border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.tabs a{display:block;text-align:center;text-decoration:none;color:var(--muted);width:min(31%,220px);padding:12px;border-radius:12px;font-weight:800}.tabs a.active{color:#10130a;background:var(--accent)}
+.exercise{padding:15px 0;border-bottom:1px solid var(--line)}.machine{height:92px;border-radius:14px;background:var(--card2);display:flex;align-items:center;justify-content:center;margin:10px 0;color:var(--muted)}
+.sets{display:grid;grid-template-columns:28px 1fr 1fr 42px;gap:7px;align-items:center;margin:7px 0}.sets input{width:100%;min-width:0;padding:9px}.sets input[type=checkbox]{width:20px;height:20px}
+.stat{font-size:34px;font-weight:900}.up{color:var(--good)}canvas{width:100%;height:190px;background:var(--card2);border-radius:14px;margin-top:12px}
+.grat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grat textarea{min-height:110px;width:100%;resize:none}.badge{font-size:11px;background:#27301c;color:var(--accent);padding:5px 8px;border-radius:999px}
+@media(max-width:520px){.grat{grid-template-columns:1fr}.sets{grid-template-columns:25px 1fr 1fr 34px}}
+</style></head>
+<body>
+<main>
+<div class="top"><div class="brand">FORGEFIT</div><div class="muted small" id="date"></div></div>
+
+<section id="food" class="page active">
+<div class="card"><div class="row between"><div><div class="muted small">HEUTIGE SCHICHT</div><h2>Tagesplan</h2></div>
+<select id="shift"><option value="early">6–15</option><option value="mid">9–17</option><option value="late">14–22</option><option value="free">Frei</option></select></div></div>
+<div class="card"><h2>Essen & Supplements</h2><div id="tasks"></div></div>
+</section>
+
+<section id="gym" class="page">
+<div class="card"><div class="row between"><div><div class="muted small">TRAININGSTAG</div><div class="stat" id="workoutName">PUSH</div></div><button type="button" id="nextWorkout">Nächster →</button></div></div>
+<div class="card"><div class="row between"><h2>Gerätebibliothek</h2><label class="scan primary">📷 Gerät scannen<input id="camera" type="file" accept="image/*" capture="environment" style="display:none"></label></div><div id="scans" class="muted small">Noch keine Geräte gespeichert.</div></div>
+<div class="card"><h2>Workout</h2><div id="exercises"></div></div>
+</section>
+
+<section id="progress" class="page">
+<div class="card"><div class="muted small">STRENGTH INDEX</div><div class="stat up" id="delta">—</div><div class="muted small">Bestes e1RM pro Trainingstag</div><canvas id="chart" width="680" height="190"></canvas></div>
+<div class="card"><div class="row between"><h2>Gratitude</h2><span class="badge">3 HEUTE</span></div><div class="grat">
+<textarea id="g1" placeholder="1 · Wofür bist du dankbar?"></textarea><textarea id="g2" placeholder="2 · Wofür bist du dankbar?"></textarea><textarea id="g3" placeholder="3 · Wofür bist du dankbar?"></textarea>
+</div></div>
+</section>
+</main>
+
+<nav class="tabs">
+<a href="#food" id="tab-food" class="active">Essen</a>
+<a href="#gym" id="tab-gym">Gym</a>
+<a href="#progress" id="tab-progress">Progress</a>
+</nav>
+
+<script>
+(function(){
+function q(s){return document.querySelector(s)}
+function qa(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+var day=(function(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")})();
+q("#date").textContent=new Intl.DateTimeFormat("de-DE",{weekday:"short",day:"2-digit",month:"short"}).format(new Date());
+
+function load(){try{return JSON.parse(localStorage.getItem("forgefit22"))||{}}catch(e){return {}}}
+var state=Object.assign({shift:"early",workout:0,checks:{},logs:[],scans:[],grat:{}},load());
+function save(){try{localStorage.setItem("forgefit22",JSON.stringify(state))}catch(e){}}
+
+function showPage(id){
+ if(["food","gym","progress"].indexOf(id)<0) id="food";
+ qa(".page").forEach(function(p){p.classList.remove("active")});
+ qa(".tabs a").forEach(function(a){a.classList.remove("active")});
+ q("#"+id).classList.add("active"); q("#tab-"+id).classList.add("active");
+ if(id==="progress") setTimeout(draw,30);
+}
+window.addEventListener("hashchange",function(){showPage(location.hash.replace("#","")||"food")});
+qa(".tabs a").forEach(function(a){a.addEventListener("click",function(){var id=this.getAttribute("href").slice(1);showPage(id)})});
+showPage(location.hash.replace("#","")||"food");
+
+var plans={
+early:[["05:10","Mozzarella Light + Tomate"],["05:10","Kreatin 5 g"],["09:00","Skyr-Gemüse-Dip"],["15:20","Banane"],["16:00","2–3 Reiswaffeln"],["16:30","GYM"],["17:35","Schokodrink + Whey → ~30–40 g Protein"],["20:30","Mozzarella Light + Tomate"],["20:30","Omega-3"],["22:00","Magnesium"]],
+mid:[["07:15","Mozzarella Light + Tomate"],["07:15","Kreatin 5 g"],["07:50","2–3 Reiswaffeln"],["08:15","GYM"],["09:20","Schokodrink + Whey → ~30–40 g Protein"],["13:00","Skyr-Gemüse-Dip"],["18:30","Mozzarella Light + Tomate"],["18:30","Omega-3"],["21:30","Magnesium"]],
+late:[["08:15","Mozzarella Light + Tomate"],["08:15","Kreatin 5 g"],["09:10","2–3 Reiswaffeln"],["09:35","GYM"],["10:40","Schokodrink + Whey → ~30–40 g Protein"],["16:30","Skyr-Gemüse-Dip"],["22:30","Mozzarella Light + Tomate"],["22:30","Omega-3"],["23:15","Magnesium"]],
+free:[["09:00","Mozzarella Light + Tomate"],["09:00","Kreatin 5 g"],["10:00","Banane + 2–3 Reiswaffeln"],["11:00","GYM"],["12:05","Schokodrink + Whey → ~30–40 g Protein"],["15:30","Skyr-Gemüse-Dip"],["20:00","Mozzarella Light + Tomate + Omega-3"],["22:30","Magnesium"]]
+};
+q("#shift").value=state.shift;
+function renderTasks(){var b=q("#tasks");b.innerHTML="";plans[state.shift].forEach(function(it,i){var k=day+"|"+state.shift+"|"+i,d=!!state.checks[k],r=document.createElement("div");r.className="task"+(d?" done":"");r.innerHTML='<input type="checkbox" '+(d?'checked':'')+'><div class="time">'+it[0]+'</div><div class="txt">'+it[1]+'</div>';r.querySelector("input").onchange=function(){state.checks[k]=this.checked;save();renderTasks()};b.appendChild(r)})}
+q("#shift").onchange=function(){state.shift=this.value;save();renderTasks()};renderTasks();
+
+var workouts=[
+["PUSH",[["Chest Press",3],["Incline Chest Press",3],["Pec Deck",2],["Shoulder Press",3],["Lateral Raise",3],["Triceps Pushdown",3]]],
+["PULL",[["Lat Pulldown",3],["Chest-Supported Row",3],["High Row",2],["Reverse Pec Deck",3],["Preacher Curl",3],["Hammer Curl",2]]],
+["LEGS",[["Hack / Pendulum Squat",3],["Leg Curl",3],["Leg Extension",3],["Adductor",2],["Calf Raise",4]]],
+["RECOVERY",[["Cable Crunch",3],["Leg Raise",3],["20–30 min Cardio",1]]],
+["UPPER",[["Incline Chest Press",3],["Lat Pulldown",3],["Row",3],["Pec Deck",2],["Lateral Raise",3],["Biceps Curl",2],["Triceps Extension",2]]],
+["LOWER",[["Leg Press",3],["Romanian Deadlift / Hip Hinge",3],["Leg Curl",3],["Leg Extension",2],["Calf Raise",4]]],
+["RECOVERY",[["Core / Mobility / Cardio",3]]]
+];
+function renderGym(){var w=workouts[state.workout],b=q("#exercises");q("#workoutName").textContent=w[0];b.innerHTML="";w[1].forEach(function(ex){var name=ex[0],cnt=ex[1],wrap=document.createElement("div"),rows="";wrap.className="exercise";for(var i=1;i<=cnt;i++){var prev=state.logs.slice().reverse().find(function(l){return l.exercise===name&&l.set===i});rows+='<div class="sets"><b>'+i+'</b><input data-k inputmode="decimal" placeholder="'+(prev?prev.kg+" kg":"kg")+'"><input data-r inputmode="numeric" placeholder="'+(prev?prev.reps+" reps":"reps")+'"><input data-c type="checkbox"></div>'}wrap.innerHTML='<div class="row between"><h3>'+name+'</h3><span class="muted small">1–2 RIR</span></div><div class="machine">◎ &nbsp; '+name+' &nbsp; →</div>'+rows;Array.prototype.forEach.call(wrap.querySelectorAll(".sets"),function(row,idx){row.querySelector("[data-c]").onchange=function(){if(!this.checked)return;var kg=parseFloat(row.querySelector("[data-k]").value.replace(",",".")),reps=parseInt(row.querySelector("[data-r]").value,10);if(!(kg>0&&reps>0)){this.checked=false;alert("Erst kg und Reps eintragen.");return}state.logs.push({date:day,exercise:name,set:idx+1,kg:kg,reps:reps,e1rm:kg*(1+reps/30)});save();draw()}});b.appendChild(wrap)})}
+q("#nextWorkout").onclick=function(){state.workout=(state.workout+1)%workouts.length;save();renderGym()};renderGym();
+
+function renderScans(){var b=q("#scans");if(!state.scans.length){b.textContent="Noch keine Geräte gespeichert.";return}b.innerHTML=state.scans.slice().reverse().slice(0,8).map(function(s){return '<div class="task"><div>📷</div><div><b>'+s.name.replace(/[<>]/g,"")+'</b><br><span class="muted small">'+(s.setting||"Keine Einstellung").replace(/[<>]/g,"")+' · '+s.date+'</span></div></div>'}).join("")}
+q("#camera").onchange=function(){var f=this.files&&this.files[0];if(!f)return;var n=prompt("Welches Gerät ist das?","Chest Press");if(!n)return;var s=prompt("Sitz-/Griffeinstellung (optional):","");state.scans.push({name:n,setting:s||"",date:day});save();renderScans();this.value=""};renderScans();
+
+var gv=state.grat[day]||["","",""];["g1","g2","g3"].forEach(function(id,i){q("#"+id).value=gv[i]||"";q("#"+id).oninput=function(){var a=state.grat[day]||["","",""];a[i]=this.value;state.grat[day]=a;save()}});
+
+function draw(){var c=q("#chart"),ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);var by={};state.logs.forEach(function(l){by[l.date]=Math.max(by[l.date]||0,l.e1rm)});var vals=Object.keys(by).sort().slice(-30).map(function(k){return [k,by[k]]});if(!vals.length){ctx.fillStyle="#929ba8";ctx.font="16px Arial";ctx.fillText("Ersten Satz loggen → Chart erscheint hier.",24,96);q("#delta").textContent="—";return}var ys=vals.map(function(v){return v[1]}),mn=Math.min.apply(null,ys)*.94,mx=Math.max.apply(null,ys)*1.04,p=22;ctx.strokeStyle="#d7ff4f";ctx.lineWidth=4;ctx.beginPath();vals.forEach(function(v,i){var px=p+i*(c.width-2*p)/Math.max(1,vals.length-1),py=c.height-p-(v[1]-mn)/(mx-mn||1)*(c.height-2*p);if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)});ctx.stroke();var d=ys.length>1?(ys[ys.length-1]/ys[0]-1)*100:0;q("#delta").textContent=(d>=0?"+":"")+d.toFixed(1)+"%"}
+draw();
+})();
+</script></body></html>
