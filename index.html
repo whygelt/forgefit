@@ -34,7 +34,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .toast{position:fixed;z-index:999;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:#1b1f24;color:white;padding:10px 14px;border:1px solid #353b44;border-radius:999px;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:520px){.grid2,.grid3,.nutgrid{grid-template-columns:1fr}.score{font-size:42px}}
 
-/* V5.0 polish */
+/* V5.0.1 polish */
 .card{padding:14px;border-radius:18px}.big{font-size:34px}.score{font-size:40px}
 .swipe-bg .del,.swipe-bg .add{min-width:68px;background:transparent;font-size:0}
 .swipe-bg .del:after{content:"⌫";font-size:24px;color:var(--red);font-weight:900}
@@ -55,7 +55,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .profileManager{display:flex;gap:7px;align-items:center}.profileManager select{flex:1}
 @media(max-width:520px){.sheet{margin:2vh auto}.amountCompact{margin:18vh auto}.libActions{gap:6px}.libActions button{padding:9px 7px;font-size:12px}}
 
-/* V5.0 */
+/* V5.0.1 */
 .healthGauge{height:128px;margin:8px 0}.healthGauge .gaugeScore{font-size:25px;top:8px}.healthGauge .candle{width:18px}
 #healthChart{height:105px!important}
 .foodDateNav{display:flex;align-items:center;gap:7px;margin:0 0 12px}.foodDateNav button{padding:8px 10px}.foodDateStrip{display:flex;gap:6px;overflow:hidden;flex:1}.foodDay{min-width:62px;text-align:center;padding:7px 5px;border-radius:12px;background:#111419;font-size:11px;color:#9299a3}.foodDay.active{background:var(--accent);color:#07090b;font-weight:900}.foodDay .dn{display:block;font-size:16px;margin-top:2px}
@@ -65,7 +65,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .muscleInfo{padding:8px;background:#0b0d10}.muscleSvg{display:block;width:100%;max-width:230px;height:190px;margin:auto}.muscleSvg .body{fill:#252a30;stroke:#69717b;stroke-width:2}.muscleSvg .primary{fill:#ff5d67}.muscleSvg .secondary{fill:#ffb15d;opacity:.8}.muscleLegend{text-align:center;font-size:10px;color:#8d949e;margin-top:2px}
 .memoryBadges{display:flex;gap:7px;flex-wrap:wrap}.memoryBadge{padding:8px 10px;border-radius:999px;background:#171b20;font-size:11px;font-weight:800}
 
-/* V5.0.1 */
+/* V5.0.1.1 */
 .foodDateNav{gap:5px}.foodDateNav>button{min-width:42px}.foodDateStrip{justify-content:center;gap:5px}.foodDay{min-width:54px;padding:6px 4px}.foodDay.active{box-shadow:inset 0 0 0 1px #d6ff3f}
 #foodToday{font-size:11px;padding:7px 9px!important}
 .taskTypeBadge{font-size:10px;padding:3px 6px;border-radius:999px;background:#20252b;color:#aab2bc;margin-left:auto}.todoBadge{color:var(--accent)}
@@ -103,6 +103,16 @@ button.primary,.primary{background:var(--accent);color:#050607;border:0}
 #foodPresetResults{max-height:43vh;overflow:auto}
 .nutritionTable .row{position:relative;overflow:hidden}.nutritionTable .row:before,.nutritionTable .row:after{content:none!important}
 @media(max-width:390px){main{padding-left:14px;padding-right:14px}.big{font-size:34px}.brand{font-size:23px}}
+
+/* V5.0.1.1 — swipe action isolation */
+.swipe{background:transparent}
+.swipe-bg{z-index:0;pointer-events:none}
+.swipe-bg .del:after,.swipe-bg .add:after{opacity:0;transform:scale(.72);transition:opacity .12s ease,transform .12s ease}
+.swipe.swiping .swipe-bg .del:after,.swipe.swiping .swipe-bg .add:after{opacity:1;transform:scale(1)}
+.swipe-front{z-index:2;background:var(--bg)!important}
+#eaten .swipe-front,#foodLibrary .swipe-front{background:var(--bg)!important}
+.food-detail{position:relative;z-index:2;background:var(--bg)!important}
+
 </style></head>
 <body><main>
 <div class="topbar"><div class="brand">FORGEFIT</div><div id="date" class="small muted"></div></div>
