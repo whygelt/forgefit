@@ -34,7 +34,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .toast{position:fixed;z-index:999;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:#1b1f24;color:white;padding:10px 14px;border:1px solid #353b44;border-radius:999px;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:520px){.grid2,.grid3,.nutgrid{grid-template-columns:1fr}.score{font-size:42px}}
 
-/* V4.1 polish */
+/* V4.3 polish */
 .card{padding:14px;border-radius:18px}.big{font-size:34px}.score{font-size:40px}
 .swipe-bg .del,.swipe-bg .add{min-width:68px;background:transparent;font-size:0}
 .swipe-bg .del:after{content:"⌫";font-size:24px;color:var(--red);font-weight:900}
@@ -54,11 +54,21 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .libActions{display:flex;gap:8px;margin:10px 0 12px}.libActions button{flex:1}.cameraInput{display:none}
 .profileManager{display:flex;gap:7px;align-items:center}.profileManager select{flex:1}
 @media(max-width:520px){.sheet{margin:2vh auto}.amountCompact{margin:18vh auto}.libActions{gap:6px}.libActions button{padding:9px 7px;font-size:12px}}
+
+/* V4.3 */
+.healthGauge{height:128px;margin:8px 0}.healthGauge .gaugeScore{font-size:25px;top:8px}.healthGauge .candle{width:18px}
+#healthChart{height:105px!important}
+.foodDateNav{display:flex;align-items:center;gap:7px;margin:0 0 12px}.foodDateNav button{padding:8px 10px}.foodDateStrip{display:flex;gap:6px;overflow:hidden;flex:1}.foodDay{min-width:62px;text-align:center;padding:7px 5px;border-radius:12px;background:#111419;font-size:11px;color:#9299a3}.foodDay.active{background:var(--accent);color:#07090b;font-weight:900}.foodDay .dn{display:block;font-size:16px;margin-top:2px}
+.feelingScale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.feelBtn{padding:10px 2px;font-weight:900}.feelBtn.active{background:var(--accent);color:#07090b}.feelRanges{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.feelRanges button{padding:6px 9px;font-size:11px}.feelRanges button.active{background:#262c33}
+#feelingChart{height:120px!important}.emotionTags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.emotionTag{padding:6px 9px;font-size:11px}.emotionTag.active{outline:1px solid var(--accent)}
+.exerciseHead{display:flex;align-items:center;justify-content:space-between;padding:4px 0}.exerciseHead h3{margin:0}.exerciseChevron{font-size:22px;transition:.2s transform}.exercise.open .exerciseChevron{transform:rotate(180deg)}
+.muscleInfo{padding:8px;background:#0b0d10}.muscleSvg{display:block;width:100%;max-width:230px;height:190px;margin:auto}.muscleSvg .body{fill:#252a30;stroke:#69717b;stroke-width:2}.muscleSvg .primary{fill:#ff5d67}.muscleSvg .secondary{fill:#ffb15d;opacity:.8}.muscleLegend{text-align:center;font-size:10px;color:#8d949e;margin-top:2px}
+.memoryBadges{display:flex;gap:7px;flex-wrap:wrap}.memoryBadge{padding:8px 10px;border-radius:999px;background:#171b20;font-size:11px;font-weight:800}
 </style></head>
 <body><main>
 <div class="topbar"><div class="brand">FORGEFIT</div><div id="date" class="small muted"></div></div>
 
-<section id="food" class="page active">
+<section id="food" class="page active"><div class="foodDateNav"><button id="foodPrev">‹</button><div class="foodDateStrip" id="foodDateStrip"></div><button id="foodNext">›</button><button id="foodToday" style="display:none">Heute</button></div>
 <div class="card"><div class="row between"><div><div class="small muted">HEUTE</div><div class="big" id="calories">0</div><div class="small muted" id="calGoal">/ 2200 kcal</div></div><button class="primary" id="openFood">+ Essen</button></div><div id="macroBars"></div><button class="ghost" id="toggleMicros" style="width:100%;margin-top:8px">Mikronährstoffe ↓</button><div id="micros" style="display:none"></div></div>
 <div class="sectionLabel">Gegessen</div><div class="list" id="eaten"></div>
 
@@ -73,6 +83,9 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 <div class="healthGauge" id="healthGauge"><div class="gaugeScore" id="gaugeScore">100</div><div class="ref"><span>100 REFERENZ</span></div><div class="wick" id="healthWick"></div><div class="candle" id="healthCandle"></div></div>
 <canvas id="healthChart" width="700" height="190"></canvas>
 <div class="row between" style="margin-top:14px"><b>Schritte</b><input id="steps" type="number" inputmode="numeric" style="width:130px" placeholder="0"></div></div>
+<div class="card" id="feelingCard"><div class="row between"><div><div class="small muted">FEELING INDEX</div><div class="big" id="feelingValue">–</div></div><button id="feelingAdd">Feeling eintragen</button></div>
+<div class="feelingScale" id="feelingScale" style="display:none"></div><div class="emotionTags" id="emotionTags" style="display:none"></div><button class="primary" id="saveFeeling" style="display:none;width:100%;margin-top:9px">Check-in speichern</button>
+<div class="feelRanges" id="feelRanges"></div><canvas id="feelingChart" width="700" height="150"></canvas><div class="small muted" id="feelingMeta">Noch keine Check-ins.</div></div>
 <div class="card"><h2>Daily Memory</h2><div id="memories" class="muted small">Noch keine besonderen Tage.</div></div>
 <div class="card"><h2>Coach</h2><div class="muted small" style="margin-bottom:8px">Nur Hinweise, wenn länger etwas auffällt. Zufuhr ≠ Blutwert.</div><div id="coach"></div></div>
 </section>
@@ -118,9 +131,10 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.from(document.querySelectorAll(s))};
 var now=new Date(), day=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
 $("#date").textContent=new Intl.DateTimeFormat("de-DE",{weekday:"short",day:"2-digit",month:"short"}).format(now);
-var DEFAULT={profile:{name:"FORGER",weight:90,height:186,age:22,sex:"male",calories:2200,goal:"Cut",theme:"Obsidian"},shift:"mid",foodLog:{},customFoods:[],schedules:{},workout:0,logs:[],cardio:{},steps:{},grat:{},health:{},memories:[]};
+var viewDay=day;
+var DEFAULT={profile:{name:"FORGER",weight:90,height:186,age:22,sex:"male",calories:2200,goal:"Cut",theme:"Obsidian"},shift:"mid",foodLog:{},customFoods:[],schedules:{},workout:0,logs:[],cardio:{},steps:{},grat:{},health:{},memories:[],feelings:{}};
 var state;try{state=Object.assign({},DEFAULT,JSON.parse(localStorage.getItem("forgefit_v4")||"{}"))}catch(e){state=JSON.parse(JSON.stringify(DEFAULT))}
-["foodLog","customFoods","schedules","logs","cardio","steps","grat","health","memories"].forEach(function(k){if(state[k]==null)state[k]=JSON.parse(JSON.stringify(DEFAULT[k]))});
+["foodLog","customFoods","schedules","logs","cardio","steps","grat","health","memories","feelings"].forEach(function(k){if(state[k]==null)state[k]=JSON.parse(JSON.stringify(DEFAULT[k]))});
 function save(){localStorage.setItem("forgefit_v4",JSON.stringify(state))}
 function toast(x){var t=$("#toast");t.textContent=x;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},1300)}
 var foods=[
@@ -137,23 +151,85 @@ var foods=[
 {name:"Rote Bete",kcal:43,p:1.6,c:10,sugar:6.8,fat:.2,sat:.03,fiber:2.8,salt:.2,vc:5,iron:.8,selenium:.7,iodine:0,magnesium:23,calcium:16,b12:0,vitD:0,folate:109,zinc:.35,potassium:325},
 {name:"Banane",kcal:89,p:1.1,c:23,sugar:12,fat:.3,sat:.11,fiber:2.6,salt:.01,vc:9,iron:.3,selenium:1,iodine:0,magnesium:27,calcium:5,b12:0,vitD:0,folate:20,zinc:.15,potassium:358},
 {name:"Reiswaffeln",kcal:365,p:7.5,c:76,sugar:.5,fat:2.7,sat:.6,fiber:3.4,salt:.01,vc:0,iron:1.5,selenium:7,iodine:0,magnesium:30,calcium:10,b12:0,vitD:0,folate:9,zinc:1.2,potassium:110},
-{name:"Jodsalz",kcal:0,p:0,c:0,sugar:0,fat:0,sat:0,fiber:0,salt:100,vc:0,iron:0,selenium:0,iodine:2000,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0},
-{name:"Kreatin",kcal:0,p:0,c:0,sugar:0,fat:0,sat:0,fiber:0,salt:0,vc:0,iron:0,selenium:0,iodine:0,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0},
-{name:"Kuchen (Beispiel)",kcal:350,p:5,c:48,sugar:28,fat:15,sat:7,fiber:1.5,salt:.5,vc:0,iron:1,selenium:4,iodine:2,magnesium:15,calcium:60,b12:.2,vitD:.2,folate:15,zinc:.5,potassium:100}
+{name:"Jodsalz",defaultAmount:3,kcal:0,p:0,c:0,sugar:0,fat:0,sat:0,fiber:0,salt:100,vc:0,iron:0,selenium:0,iodine:2000,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0},
+{name:"Kreatin",defaultAmount:5,kcal:0,p:0,c:0,sugar:0,fat:0,sat:0,fiber:0,salt:0,vc:0,iron:0,selenium:0,iodine:0,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0},
+{name:"Kuchen (Beispiel)",kcal:350,p:5,c:48,sugar:28,fat:15,sat:7,fiber:1.5,salt:.5,vc:0,iron:1,selenium:4,iodine:2,magnesium:15,calcium:60,b12:.2,vitD:.2,folate:15,zinc:.5,potassium:100},
+{name:"Brokkoli",kcal:34,p:2.8,c:6.6,sugar:1.7,fat:0.4,sat:0,fiber:2.6,salt:0,vc:89,iron:0.7,selenium:0.4,iodine:0,magnesium:21,calcium:47,b12:0,vitD:0,folate:63,zinc:0.4,potassium:316},
+{name:"Blumenkohl",kcal:25,p:1.9,c:5,sugar:1.9,fat:0.3,sat:0,fiber:2,salt:0,vc:48,iron:0.4,selenium:0.6,iodine:0,magnesium:15,calcium:22,b12:0,vitD:0,folate:57,zinc:0.3,potassium:299},
+{name:"Rosenkohl",kcal:43,p:3.4,c:9,sugar:2.2,fat:0.3,sat:0,fiber:3.8,salt:0,vc:85,iron:1.4,selenium:1.6,iodine:0,magnesium:23,calcium:42,b12:0,vitD:0,folate:61,zinc:0.4,potassium:389},
+{name:"Grünkohl",kcal:49,p:4.3,c:8.8,sugar:2.3,fat:0.9,sat:0,fiber:3.6,salt:0,vc:120,iron:1.5,selenium:0.9,iodine:0,magnesium:47,calcium:150,b12:0,vitD:0,folate:141,zinc:0.6,potassium:491},
+{name:"Spinat",kcal:23,p:2.9,c:3.6,sugar:0.4,fat:0.4,sat:0,fiber:2.2,salt:0,vc:28,iron:2.7,selenium:1,iodine:0,magnesium:79,calcium:99,b12:0,vitD:0,folate:194,zinc:0.5,potassium:558},
+{name:"Feldsalat",kcal:21,p:2,c:3.6,sugar:0.8,fat:0.4,sat:0,fiber:1.5,salt:0,vc:35,iron:2.2,selenium:0.9,iodine:0,magnesium:13,calcium:38,b12:0,vitD:0,folate:145,zinc:0.6,potassium:459},
+{name:"Kopfsalat",kcal:15,p:1.4,c:2.9,sugar:0.8,fat:0.2,sat:0,fiber:1.3,salt:0,vc:9,iron:0.9,selenium:0.6,iodine:0,magnesium:13,calcium:36,b12:0,vitD:0,folate:38,zinc:0.2,potassium:194},
+{name:"Rucola",kcal:25,p:2.6,c:3.7,sugar:2.1,fat:0.7,sat:0,fiber:1.6,salt:0,vc:15,iron:1.5,selenium:0.3,iodine:0,magnesium:47,calcium:160,b12:0,vitD:0,folate:97,zinc:0.5,potassium:369},
+{name:"Gurke",kcal:15,p:0.7,c:3.6,sugar:1.7,fat:0.1,sat:0,fiber:0.5,salt:0,vc:3,iron:0.3,selenium:0.3,iodine:0,magnesium:13,calcium:16,b12:0,vitD:0,folate:7,zinc:0.2,potassium:147},
+{name:"Zucchini",kcal:17,p:1.2,c:3.1,sugar:2.5,fat:0.3,sat:0,fiber:1,salt:0,vc:18,iron:0.4,selenium:0.2,iodine:0,magnesium:18,calcium:16,b12:0,vitD:0,folate:24,zinc:0.3,potassium:261},
+{name:"Aubergine",kcal:25,p:1,c:5.9,sugar:3.5,fat:0.2,sat:0,fiber:3,salt:0,vc:2,iron:0.2,selenium:0.3,iodine:0,magnesium:14,calcium:9,b12:0,vitD:0,folate:22,zinc:0.2,potassium:229},
+{name:"Paprika grün",kcal:20,p:0.9,c:4.6,sugar:2.4,fat:0.2,sat:0,fiber:1.7,salt:0,vc:80,iron:0.3,selenium:0.1,iodine:0,magnesium:10,calcium:10,b12:0,vitD:0,folate:10,zinc:0.1,potassium:175},
+{name:"Paprika gelb",kcal:27,p:1,c:6.3,sugar:3.5,fat:0.2,sat:0,fiber:0.9,salt:0,vc:184,iron:0.5,selenium:0.1,iodine:0,magnesium:12,calcium:11,b12:0,vitD:0,folate:26,zinc:0.2,potassium:212},
+{name:"Cherrytomaten",kcal:18,p:0.9,c:3.9,sugar:2.6,fat:0.2,sat:0,fiber:1.2,salt:0,vc:14,iron:0.3,selenium:0.4,iodine:1,magnesium:11,calcium:10,b12:0,vitD:0,folate:15,zinc:0.2,potassium:237},
+{name:"Sellerieknolle",kcal:42,p:1.5,c:9.2,sugar:1.6,fat:0.3,sat:0,fiber:1.8,salt:0,vc:8,iron:0.7,selenium:0.7,iodine:0,magnesium:20,calcium:43,b12:0,vitD:0,folate:8,zinc:0.3,potassium:300},
+{name:"Stangensellerie",kcal:14,p:0.7,c:3,sugar:1.3,fat:0.2,sat:0,fiber:1.6,salt:0,vc:3,iron:0.2,selenium:0.4,iodine:0,magnesium:11,calcium:40,b12:0,vitD:0,folate:36,zinc:0.1,potassium:260},
+{name:"Fenchel",kcal:31,p:1.2,c:7.3,sugar:3.9,fat:0.2,sat:0,fiber:3.1,salt:0,vc:12,iron:0.7,selenium:0.7,iodine:0,magnesium:17,calcium:49,b12:0,vitD:0,folate:27,zinc:0.2,potassium:414},
+{name:"Spargel grün",kcal:20,p:2.2,c:3.9,sugar:1.9,fat:0.1,sat:0,fiber:2.1,salt:0,vc:6,iron:2.1,selenium:2.3,iodine:0,magnesium:14,calcium:24,b12:0,vitD:0,folate:52,zinc:0.5,potassium:202},
+{name:"Champignons",kcal:22,p:3.1,c:3.3,sugar:2,fat:0.3,sat:0,fiber:1,salt:0,vc:2,iron:0.5,selenium:9.3,iodine:0,magnesium:9,calcium:3,b12:0,vitD:0,folate:17,zinc:0.5,potassium:318},
+{name:"Zwiebel",kcal:40,p:1.1,c:9.3,sugar:4.2,fat:0.1,sat:0,fiber:1.7,salt:0,vc:7,iron:0.2,selenium:0.5,iodine:0,magnesium:10,calcium:23,b12:0,vitD:0,folate:19,zinc:0.2,potassium:146},
+{name:"Frühlingszwiebel",kcal:32,p:1.8,c:7.3,sugar:2.3,fat:0.2,sat:0,fiber:2.6,salt:0,vc:19,iron:1.5,selenium:0.6,iodine:0,magnesium:20,calcium:72,b12:0,vitD:0,folate:64,zinc:0.4,potassium:276},
+{name:"Knoblauch",kcal:149,p:6.4,c:33.1,sugar:1,fat:0.5,sat:0,fiber:2.1,salt:0,vc:31,iron:1.7,selenium:14.2,iodine:0,magnesium:25,calcium:181,b12:0,vitD:0,folate:3,zinc:1.2,potassium:401},
+{name:"Lauch",kcal:61,p:1.5,c:14.2,sugar:3.9,fat:0.3,sat:0,fiber:1.8,salt:0,vc:12,iron:2.1,selenium:1,iodine:0,magnesium:28,calcium:59,b12:0,vitD:0,folate:64,zinc:0.1,potassium:180},
+{name:"Mais gekocht",kcal:96,p:3.4,c:21,sugar:4.5,fat:0.7,sat:0,fiber:2.4,salt:0,vc:5,iron:0.5,selenium:0.2,iodine:0,magnesium:26,calcium:3,b12:0,vitD:0,folate:23,zinc:0.6,potassium:218},
+{name:"Erbsen",kcal:81,p:5.4,c:14.5,sugar:5.7,fat:0.4,sat:0,fiber:5.1,salt:0,vc:40,iron:1.5,selenium:1.8,iodine:0,magnesium:33,calcium:25,b12:0,vitD:0,folate:65,zinc:1.2,potassium:244},
+{name:"Grüne Bohnen",kcal:31,p:1.8,c:7,sugar:3.3,fat:0.2,sat:0,fiber:2.7,salt:0,vc:12,iron:1,selenium:0.6,iodine:0,magnesium:25,calcium:37,b12:0,vitD:0,folate:33,zinc:0.2,potassium:211},
+{name:"Hokkaido-Kürbis",kcal:63,p:1.7,c:12.6,sugar:2.8,fat:0.6,sat:0,fiber:2.2,salt:0,vc:20,iron:0.8,selenium:0.3,iodine:0,magnesium:14,calcium:53,b12:0,vitD:0,folate:16,zinc:0.3,potassium:340},
+{name:"Süßkartoffel",kcal:86,p:1.6,c:20.1,sugar:4.2,fat:0.1,sat:0,fiber:3,salt:0,vc:2.4,iron:0.6,selenium:0.6,iodine:0,magnesium:25,calcium:30,b12:0,vitD:0,folate:11,zinc:0.3,potassium:337},
+{name:"Kartoffel",kcal:77,p:2,c:17.5,sugar:0.8,fat:0.1,sat:0,fiber:2.2,salt:0,vc:20,iron:0.8,selenium:0.4,iodine:0,magnesium:23,calcium:12,b12:0,vitD:0,folate:15,zinc:0.3,potassium:421},
+{name:"Avocado",kcal:160,p:2,c:8.5,sugar:0.7,fat:14.7,sat:2.1,fiber:6.7,salt:0,vc:10,iron:0.6,selenium:0.4,iodine:0,magnesium:29,calcium:12,b12:0,vitD:0,folate:81,zinc:0.6,potassium:485},
+{name:"Apfel",kcal:52,p:0.3,c:13.8,sugar:10.4,fat:0.2,sat:0,fiber:2.4,salt:0,vc:5,iron:0.1,selenium:0,iodine:0,magnesium:5,calcium:6,b12:0,vitD:0,folate:3,zinc:0.04,potassium:107},
+{name:"Birne",kcal:57,p:0.4,c:15.2,sugar:9.8,fat:0.1,sat:0,fiber:3.1,salt:0,vc:4,iron:0.2,selenium:0.1,iodine:0,magnesium:7,calcium:9,b12:0,vitD:0,folate:7,zinc:0.1,potassium:116},
+{name:"Orange",kcal:47,p:0.9,c:11.8,sugar:9.4,fat:0.1,sat:0,fiber:2.4,salt:0,vc:53,iron:0.1,selenium:0.5,iodine:0,magnesium:10,calcium:40,b12:0,vitD:0,folate:30,zinc:0.1,potassium:181},
+{name:"Mandarine",kcal:53,p:0.8,c:13.3,sugar:10.6,fat:0.3,sat:0,fiber:1.8,salt:0,vc:27,iron:0.2,selenium:0.1,iodine:0,magnesium:12,calcium:37,b12:0,vitD:0,folate:16,zinc:0.1,potassium:166},
+{name:"Grapefruit",kcal:42,p:0.8,c:10.7,sugar:6.9,fat:0.1,sat:0,fiber:1.6,salt:0,vc:31,iron:0.1,selenium:0.1,iodine:0,magnesium:9,calcium:22,b12:0,vitD:0,folate:13,zinc:0.1,potassium:135},
+{name:"Zitrone",kcal:29,p:1.1,c:9.3,sugar:2.5,fat:0.3,sat:0,fiber:2.8,salt:0,vc:53,iron:0.6,selenium:0.4,iodine:0,magnesium:8,calcium:26,b12:0,vitD:0,folate:11,zinc:0.1,potassium:138},
+{name:"Limette",kcal:30,p:0.7,c:10.5,sugar:1.7,fat:0.2,sat:0,fiber:2.8,salt:0,vc:29,iron:0.6,selenium:0.4,iodine:0,magnesium:6,calcium:33,b12:0,vitD:0,folate:10,zinc:0.1,potassium:102},
+{name:"Mango",kcal:60,p:0.8,c:15,sugar:13.7,fat:0.4,sat:0,fiber:1.6,salt:0,vc:36,iron:0.2,selenium:0.6,iodine:0,magnesium:10,calcium:11,b12:0,vitD:0,folate:43,zinc:0.1,potassium:168},
+{name:"Ananas",kcal:50,p:0.5,c:13.1,sugar:9.9,fat:0.1,sat:0,fiber:1.4,salt:0,vc:48,iron:0.3,selenium:0.1,iodine:0,magnesium:12,calcium:13,b12:0,vitD:0,folate:18,zinc:0.1,potassium:109},
+{name:"Pfirsich",kcal:39,p:0.9,c:9.5,sugar:8.4,fat:0.3,sat:0,fiber:1.5,salt:0,vc:7,iron:0.3,selenium:0.1,iodine:0,magnesium:9,calcium:6,b12:0,vitD:0,folate:4,zinc:0.2,potassium:190},
+{name:"Nektarine",kcal:44,p:1.1,c:10.6,sugar:7.9,fat:0.3,sat:0,fiber:1.7,salt:0,vc:5,iron:0.3,selenium:0.1,iodine:0,magnesium:9,calcium:6,b12:0,vitD:0,folate:5,zinc:0.2,potassium:201},
+{name:"Aprikose",kcal:48,p:1.4,c:11.1,sugar:9.2,fat:0.4,sat:0,fiber:2,salt:0,vc:10,iron:0.4,selenium:0.1,iodine:0,magnesium:10,calcium:13,b12:0,vitD:0,folate:9,zinc:0.2,potassium:259},
+{name:"Pflaume",kcal:46,p:0.7,c:11.4,sugar:9.9,fat:0.3,sat:0,fiber:1.4,salt:0,vc:10,iron:0.2,selenium:0.1,iodine:0,magnesium:7,calcium:6,b12:0,vitD:0,folate:5,zinc:0.1,potassium:157},
+{name:"Kirschen",kcal:63,p:1.1,c:16,sugar:12.8,fat:0.2,sat:0,fiber:2.1,salt:0,vc:7,iron:0.4,selenium:0,iodine:0,magnesium:11,calcium:13,b12:0,vitD:0,folate:4,zinc:0.1,potassium:222},
+{name:"Weintrauben",kcal:69,p:0.7,c:18.1,sugar:15.5,fat:0.2,sat:0,fiber:0.9,salt:0,vc:3,iron:0.4,selenium:0.1,iodine:0,magnesium:7,calcium:10,b12:0,vitD:0,folate:2,zinc:0.1,potassium:191},
+{name:"Erdbeeren",kcal:32,p:0.7,c:7.7,sugar:4.9,fat:0.3,sat:0,fiber:2,salt:0,vc:59,iron:0.4,selenium:0.4,iodine:0,magnesium:13,calcium:16,b12:0,vitD:0,folate:24,zinc:0.1,potassium:153},
+{name:"Himbeeren",kcal:52,p:1.2,c:11.9,sugar:4.4,fat:0.7,sat:0,fiber:6.5,salt:0,vc:26,iron:0.7,selenium:0.2,iodine:0,magnesium:22,calcium:25,b12:0,vitD:0,folate:21,zinc:0.4,potassium:151},
+{name:"Blaubeeren",kcal:57,p:0.7,c:14.5,sugar:10,fat:0.3,sat:0,fiber:2.4,salt:0,vc:10,iron:0.3,selenium:0.1,iodine:0,magnesium:6,calcium:6,b12:0,vitD:0,folate:6,zinc:0.2,potassium:77},
+{name:"Brombeeren",kcal:43,p:1.4,c:9.6,sugar:4.9,fat:0.5,sat:0,fiber:5.3,salt:0,vc:21,iron:0.6,selenium:0.4,iodine:0,magnesium:20,calcium:29,b12:0,vitD:0,folate:25,zinc:0.5,potassium:162},
+{name:"Johannisbeeren rot",kcal:56,p:1.4,c:13.8,sugar:7.4,fat:0.2,sat:0,fiber:4.3,salt:0,vc:41,iron:1,selenium:0.6,iodine:0,magnesium:13,calcium:33,b12:0,vitD:0,folate:8,zinc:0.2,potassium:275},
+{name:"Wassermelone",kcal:30,p:0.6,c:7.6,sugar:6.2,fat:0.2,sat:0,fiber:0.4,salt:0,vc:8,iron:0.2,selenium:0.4,iodine:0,magnesium:10,calcium:7,b12:0,vitD:0,folate:3,zinc:0.1,potassium:112},
+{name:"Honigmelone",kcal:36,p:0.5,c:9.1,sugar:8.1,fat:0.1,sat:0,fiber:0.8,salt:0,vc:18,iron:0.2,selenium:0.4,iodine:0,magnesium:10,calcium:6,b12:0,vitD:0,folate:19,zinc:0.1,potassium:228},
+{name:"Granatapfel",kcal:83,p:1.7,c:18.7,sugar:13.7,fat:1.2,sat:0,fiber:4,salt:0,vc:10,iron:0.3,selenium:0.5,iodine:0,magnesium:12,calcium:10,b12:0,vitD:0,folate:38,zinc:0.4,potassium:236},
+{name:"Feige frisch",kcal:74,p:0.8,c:19.2,sugar:16.3,fat:0.3,sat:0,fiber:2.9,salt:0,vc:2,iron:0.4,selenium:0.2,iodine:0,magnesium:17,calcium:35,b12:0,vitD:0,folate:6,zinc:0.2,potassium:232}
 ];
 function db(){return foods.concat(state.customFoods)}
 function refs(){return {p:state.profile.weight*1.8,c:220,fat:70,sugar:50,fiber:30,vc:100,iron:state.profile.sex==="female"?15:10,selenium:70,iodine:150,magnesium:350,calcium:1000,b12:4,vitD:20,folate:300,zinc:state.profile.sex==="female"?10:14,potassium:4000}}
-function entries(){return state.foodLog[day]||[]}
+function entries(d){return state.foodLog[d||day]||[]}
 function totalsFor(d){var t={kcal:0,p:0,c:0,sugar:0,fat:0,sat:0,fiber:0,salt:0,vc:0,iron:0,selenium:0,iodine:0,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0};(state.foodLog[d]||[]).forEach(function(e){var f=db().find(function(x){return x.name===e.name});if(!f)return;var m=e.g/100;Object.keys(t).forEach(function(k){t[k]+=(f[k]||0)*m})});return t}
 function metric(n,v,g,u,key){return '<div class="metric clickMetric" data-nutrient="'+(key||"")+'"><div class="metricHead"><b>'+n+'</b><span>'+Math.round(v)+' / '+Math.round(g)+' '+u+'</span></div><div class="bar"><i style="width:'+Math.min(100,v/g*100)+'%"></i></div></div>'}
 function labelRows(f,g){var m=g/100;return [["Energie",Math.round(f.kcal*m)+" kcal"],["Fett",(f.fat*m).toFixed(1)+" g"],["davon gesättigte Fettsäuren",((f.sat||0)*m).toFixed(1)+" g"],["Kohlenhydrate",(f.c*m).toFixed(1)+" g"],["davon Zucker",(f.sugar*m).toFixed(1)+" g"],["Ballaststoffe",(f.fiber*m).toFixed(1)+" g"],["Eiweiß",(f.p*m).toFixed(1)+" g"],["Salz",((f.salt||0)*m).toFixed(2)+" g"]]}
-function renderFood(){var t=totalsFor(day),r=refs();$("#calories").textContent=Math.round(t.kcal);$("#calGoal").textContent="/ "+state.profile.calories+" kcal";$("#macroBars").innerHTML=metric("Protein",t.p,r.p,"g","p")+metric("Kohlenhydrate",t.c,r.c,"g","c")+metric("Fett",t.f,r.fat,"g","fat")+metric("Zucker",t.sugar,r.sugar,"g","sugar")+metric("Ballaststoffe",t.fiber,r.fiber,"g","fiber");
+
+function isoDate(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dateFromIso(x){var p=x.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function shiftViewDay(n){var d=dateFromIso(viewDay);d.setDate(d.getDate()+n);var nd=isoDate(d);if(nd>day)nd=day;viewDay=nd;renderFood();renderFoodDateNav()}
+function renderFoodDateNav(){var base=dateFromIso(viewDay),html="";for(var i=-2;i<=2;i++){var d=new Date(base);d.setDate(d.getDate()+i);var id=isoDate(d);if(id>day)continue;html+='<button class="foodDay '+(id===viewDay?"active":"")+'" data-foodday="'+id+'">'+new Intl.DateTimeFormat("de-DE",{weekday:"short"}).format(d)+'<span class="dn">'+d.getDate()+'.</span></button>'}$("#foodDateStrip").innerHTML=html;$("#foodToday").style.display=viewDay===day?"none":"block";$$("[data-foodday]").forEach(function(b){b.onclick=function(){viewDay=this.dataset.foodday;renderFood();renderFoodDateNav()}})}
+$("#foodPrev").onclick=function(){shiftViewDay(-1)};$("#foodNext").onclick=function(){shiftViewDay(1)};$("#foodToday").onclick=function(){viewDay=day;renderFood();renderFoodDateNav()};
+var foodTouchX=0;$("#food").addEventListener("touchstart",function(e){if(e.touches.length===1)foodTouchX=e.touches[0].clientX},{passive:true});$("#food").addEventListener("touchend",function(e){if(!foodTouchX)return;var dx=e.changedTouches[0].clientX-foodTouchX;foodTouchX=0;if(Math.abs(dx)>90){if(dx>0)shiftViewDay(-1);else shiftViewDay(1)}},{passive:true});
+
+function renderFood(){var t=totalsFor(viewDay),r=refs();$("#calories").textContent=Math.round(t.kcal);$("#calGoal").textContent="/ "+state.profile.calories+" kcal";$("#macroBars").innerHTML=metric("Protein",t.p,r.p,"g","p")+metric("Kohlenhydrate",t.c,r.c,"g","c")+metric("Fett",t.f,r.fat,"g","fat")+metric("Zucker",t.sugar,r.sugar,"g","sugar")+metric("Ballaststoffe",t.fiber,r.fiber,"g","fiber");
 $("#micros").innerHTML='<div class="nutgrid">'+[["Vitamin C","vc","mg"],["Eisen","iron","mg"],["Selen","selenium","µg"],["Jod","iodine","µg"],["Magnesium","magnesium","mg"],["Calcium","calcium","mg"],["Vitamin B12","b12","µg"],["Vitamin D","vitD","µg"],["Folat","folate","µg"],["Zink","zinc","mg"],["Kalium","potassium","mg"]].map(function(x){return '<div class="microBox">'+metric(x[0],t[x[1]],r[x[1]],x[2],x[1])+'</div>'}).join("")+'</div><div class="small muted" style="margin-top:9px">~ geschätzte Zufuhr aus deinen Einträgen; kein Blutwert.</div>';
-var box=$("#eaten");if(!entries().length){box.innerHTML='<div class="muted small" style="padding:15px">Noch nichts gegessen.</div>'}else{box.innerHTML=entries().map(function(e,i){var f=db().find(function(x){return x.name===e.name})||{};var rows=labelRows(f,e.g).map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>'}).join("");return '<div class="swipe" data-eaten="'+i+'"><div class="swipe-bg"><div class="del">🗑</div></div><div class="swipe-front"><div class="food-title">'+e.name+'</div><div class="food-sub">'+e.g+' g/ml · '+Math.round((f.kcal||0)*e.g/100)+' kcal</div></div><div class="food-detail"><table class="label-table">'+rows+'</table><div class="small muted" style="margin-top:8px">Mikronährstoffe sind im Tages-Dashboard enthalten.</div></div></div>'}).join("");$$("[data-eaten]").forEach(function(row){bindSwipe(row,{right:function(){var i=+row.dataset.eaten;state.foodLog[day].splice(i,1);save();renderAll();toast("Entfernt")},tap:function(){row.querySelector(".food-detail").classList.toggle("open")}})});
+var box=$("#eaten");if(!entries(viewDay).length){box.innerHTML='<div class="muted small" style="padding:15px">Noch nichts gegessen.</div>'}else{box.innerHTML=entries(viewDay).map(function(e,i){var f=db().find(function(x){return x.name===e.name})||{};var rows=labelRows(f,e.g).map(function(x){return '<tr><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>'}).join("");return '<div class="swipe" data-eaten="'+i+'"><div class="swipe-bg"><div class="del">🗑</div></div><div class="swipe-front"><div class="food-title">'+e.name+'</div><div class="food-sub">'+e.g+' g/ml · '+Math.round((f.kcal||0)*e.g/100)+' kcal</div></div><div class="food-detail"><table class="label-table">'+rows+'</table><div class="small muted" style="margin-top:8px">Mikronährstoffe sind im Tages-Dashboard enthalten.</div></div></div>'}).join("");$$("[data-eaten]").forEach(function(row){bindSwipe(row,{right:function(){var i=+row.dataset.eaten;state.foodLog[viewDay].splice(i,1);save();renderAll();toast("Entfernt")},tap:function(){row.querySelector(".food-detail").classList.toggle("open")}})});
 $$("[data-nutrient]").forEach(function(el){el.onclick=function(){showSources(this.dataset.nutrient,this.querySelector("b").textContent)}})}
 renderHealth()}
 $("#toggleMicros").onclick=function(){var m=$("#micros");m.style.display=m.style.display==="none"?"block":"none"};
-function showSources(key,title){if(!key)return;var rows=[];entries().forEach(function(e){var f=db().find(function(x){return x.name===e.name});if(!f)return;var val=(f[key]||0)*e.g/100;if(val>0)rows.push({name:e.name,val:val})});rows.sort(function(a,b){return b.val-a.val});$("#sourceTitle").textContent=title+" · Quellen";$("#sourceList").innerHTML=rows.length?rows.map(function(x){return '<div class="sourceRow"><span>'+x.name+'</span><b>'+((x.val<10)?x.val.toFixed(1):Math.round(x.val))+'</b></div>'}).join(""):'<div class="muted small">Aus den heutigen Einträgen kommt hierfür noch kein messbarer Beitrag.</div>';$("#sourceModal").classList.add("open")}
+function showSources(key,title){if(!key)return;var rows=[];entries(viewDay).forEach(function(e){var f=db().find(function(x){return x.name===e.name});if(!f)return;var val=(f[key]||0)*e.g/100;if(val>0)rows.push({name:e.name,val:val})});rows.sort(function(a,b){return b.val-a.val});$("#sourceTitle").textContent=title+" · Quellen";$("#sourceList").innerHTML=rows.length?rows.map(function(x){return '<div class="sourceRow"><span>'+x.name+'</span><b>'+((x.val<10)?x.val.toFixed(1):Math.round(x.val))+'</b></div>'}).join(""):'<div class="muted small">Aus den heutigen Einträgen kommt hierfür noch kein messbarer Beitrag.</div>';$("#sourceModal").classList.add("open")}
 $("#closeSource").onclick=function(){$("#sourceModal").classList.remove("open")};
 
 
@@ -168,14 +244,15 @@ front.addEventListener("click",function(){if(!moved&&actions.tap)actions.tap()})
 /* Food library */
 var pendingFood=null;
 function renderLibrary(){var showSearch=db().length>10;$("#foodSearch").style.display=showSearch?"block":"none";if(!showSearch)$("#foodSearch").value="";var q=$("#foodSearch").value.toLowerCase().trim();var list=db().map(function(f,i){return {f:f,i:i,custom:i>=foods.length}}).filter(function(x){return x.f.name.toLowerCase().indexOf(q)>=0});$("#foodLibrary").innerHTML=list.map(function(x){return '<div class="swipe" data-lib="'+x.i+'"><div class="swipe-bg"><div class="del">'+(x.custom?"🗑":"")+'</div><div class="add">＋</div></div><div class="swipe-front"><div class="food-title">'+x.f.name+'</div><div class="food-sub">'+Math.round(x.f.kcal)+' kcal / 100 g · '+x.f.p+' g Protein · '+x.f.c+' g Kohlenhydrate · '+x.f.fat+' g Fett</div></div></div>'}).join("");$$("[data-lib]").forEach(function(row){var idx=+row.dataset.lib,custom=idx>=foods.length;bindSwipe(row,{left:function(){chooseFood(idx)},right:custom?function(){state.customFoods.splice(idx-foods.length,1);save();renderLibrary();toast("Lebensmittel gelöscht")}:null,tap:function(){chooseFood(idx)}})})}
-function chooseFood(i){pendingFood=db()[i];$("#amountTitle").textContent=pendingFood.name;$("#amount").value=pendingFood.name==="Jodsalz"?3:100;$("#amountModal").classList.add("open")}
+function chooseFood(i){pendingFood=db()[i];$("#amountTitle").textContent=pendingFood.name;$("#amount").value=pendingFood.defaultAmount||100;$("#amountModal").classList.add("open")}
 
 $("#scanFood").onclick=function(){$("#foodCamera").click()};
 $("#foodCamera").onchange=function(){if(this.files&&this.files[0]){toast("Foto erfasst · automatische Etiketterkennung folgt");$("#customModal").classList.add("open")}};
 
 $("#openFood").onclick=function(){$("#foodModal").classList.add("open");renderLibrary()};$("#closeFood").onclick=function(){$("#foodModal").classList.remove("open")};$("#foodSearch").oninput=renderLibrary;
-$("#closeAmount").onclick=function(){$("#amountModal").classList.remove("open")};$("#minusAmount").onclick=function(){$("#amount").value=Math.max(1,(+$("#amount").value||0)-10)};$("#plusAmount").onclick=function(){$("#amount").value=(+$("#amount").value||0)+10};
-$("#confirmAmount").onclick=function(){var g=+$("#amount").value;if(!pendingFood||g<=0)return;(state.foodLog[day]||(state.foodLog[day]=[])).push({name:pendingFood.name,g:g});save();$("#amountModal").classList.remove("open");$("#foodModal").classList.remove("open");renderAll();toast(pendingFood.name+" hinzugefügt ✓")};
+$("#closeAmount").onclick=function(){$("#amountModal").classList.remove("open")};function amountStep(){return pendingFood&&pendingFood.defaultAmount&&pendingFood.defaultAmount<=5?1:10}
+$("#minusAmount").onclick=function(){$("#amount").value=Math.max(1,(+$("#amount").value||0)-amountStep())};$("#plusAmount").onclick=function(){$("#amount").value=(+$("#amount").value||0)+amountStep()};
+$("#confirmAmount").onclick=function(){var g=+$("#amount").value;if(!pendingFood||g<=0)return;(state.foodLog[viewDay]||(state.foodLog[viewDay]=[])).push({name:pendingFood.name,g:g});save();$("#amountModal").classList.remove("open");$("#foodModal").classList.remove("open");renderAll();toast(pendingFood.name+" hinzugefügt ✓")};
 
 /* custom food */
 var fields=[["Name","cf_name","text"],["kcal / 100 g","cf_kcal","number"],["Protein g","cf_p","number"],["Kohlenhydrate g","cf_c","number"],["davon Zucker g","cf_sugar","number"],["Fett g","cf_fat","number"],["gesättigte Fettsäuren g","cf_sat","number"],["Ballaststoffe g","cf_fiber","number"],["Salz g","cf_salt","number"],["Vitamin C mg","cf_vc","number"],["Eisen mg","cf_iron","number"],["Selen µg","cf_selenium","number"],["Jod µg","cf_iodine","number"],["Magnesium mg","cf_magnesium","number"],["Calcium mg","cf_calcium","number"],["Vitamin B12 µg","cf_b12","number"],["Vitamin D µg","cf_vitD","number"],["Folat µg","cf_folate","number"],["Zink mg","cf_zinc","number"],["Kalium mg","cf_potassium","number"]];
@@ -204,8 +281,44 @@ $("#deleteScheduleProfile").onclick=function(){var keys=Object.keys(state.schedu
 /* Health: 100 is strong reference, can exceed, diminishing returns */
 function dayScore(d){var t=totalsFor(d),r=refs(),microKeys=["vc","iron","selenium","iodine","magnesium","calcium","b12","folate","zinc","potassium"];var micro=microKeys.reduce(function(a,k){return a+Math.min(1,t[k]/r[k])},0)/microKeys.length;
 var food=.45*Math.min(1,t.p/r.p)+.35*Math.min(1,t.fiber/r.fiber)+.20*Math.max(0,1-Math.max(0,t.sugar-r.sugar)/100);var steps=state.steps[d]||0;var move=Math.min(1.12,Math.log(1+steps/2500)/Math.log(1+10000/2500));var logs=state.logs.filter(function(l){return l.date===d});var card=state.cardio[d]||[];var intensity=logs.length?Math.min(1.08,.65+logs.length/30):0; if(card.length)intensity=Math.max(intensity,Math.min(1.08,.55+card.reduce(function(a,x){return a+x.minutes*x.rpe},0)/500));var nutrition=.55*micro+.45*food;var plannedGym=(state.schedules[state.shift]||[]).some(function(x){return /gym|training/i.test(x.name)}),skipPenalty=(plannedGym&&!logs.length&&!card.length)?4:0,sugarPenalty=Math.max(0,(t.sugar-r.sugar)/25),fiberBonus=Math.min(2,Math.max(0,t.fiber-r.fiber)/10);var score=100*(.50*nutrition+.25*move+.25*intensity)-skipPenalty-sugarPenalty+fiberBonus;return {score:Math.max(0,Math.round(score*10)/10),nutrition:nutrition,move:move,intensity:intensity}}
+
+function autoMemories(d,h){
+ var out=[],st=state.steps[d]||0, sch=state.schedules[state.shift]||[];
+ if(st>=40000)out.push("⚡ 40K");else if(st>=20000)out.push("🚶 20K");else if(st>=10000)out.push("🚶 10K");
+ var early=sch.filter(function(x){return x.time&&x.time<"09:00"&&x.done});if(early.length)out.push("🌅 Früher Vogel");
+ var planned=sch.length,done=sch.filter(function(x){return x.done}).length;if(planned&&done===planned)out.push("🎯 Plan erfüllt");
+ if((state.logs||[]).some(function(x){return x.date===d})||(state.cardio[d]||[]).length)out.push("🏋️ Training");
+ if(h&&h.nutrition>=.9)out.push("🥦 Ernährung stark");
+ return out;
+}
+
+
+var feelingDraft=7, feelingEmotion="", feelingRange="1W";
+function feelingEntries(){var out=[];Object.keys(state.feelings||{}).sort().forEach(function(d){(state.feelings[d]||[]).forEach(function(x){out.push({date:d,ts:x.ts||d,value:+x.value,emotion:x.emotion||""})})});return out}
+function median(a){if(!a.length)return null;var b=a.slice().sort(function(x,y){return x-y}),m=Math.floor(b.length/2);return b.length%2?b[m]:(b[m-1]+b[m])/2}
+function feelingSeries(range){
+ var all=feelingEntries(), days={};all.forEach(function(x){(days[x.date]||(days[x.date]=[])).push(x.value)});
+ var keys=Object.keys(days).sort(), n=range==="1D"?1:range==="1W"?7:range==="1M"?31:range==="3M"?93:range==="1J"?365:range==="5J"?1825:99999;
+ keys=keys.slice(-n);var raw=keys.map(function(k){return [k,median(days[k])]});
+ if(range==="1D"){var today=state.feelings[day]||[];return today.map(function(x,i){return [String(i+1),+x.value]})}
+ var win=range==="1W"?1:range==="1M"?3:range==="3M"?7:range==="1J"?21:range==="5J"?45:90;
+ return raw.map(function(x,i){var vals=raw.slice(Math.max(0,i-win+1),i+1).map(function(y){return y[1]});return [x[0],median(vals)]});
+}
+function renderFeeling(){
+ var todays=(state.feelings[day]||[]).map(function(x){return +x.value}), latest=todays.length?median(todays):null;
+ $("#feelingValue").textContent=latest==null?"–":latest.toFixed(1);
+ var ranges=["1D","1W","1M","3M","1J","5J","ALL"];$("#feelRanges").innerHTML=ranges.map(function(x){return '<button data-fr="'+x+'" class="'+(x===feelingRange?"active":"")+'">'+x+'</button>'}).join("");
+ $$("[data-fr]").forEach(function(b){b.onclick=function(){feelingRange=this.dataset.fr;renderFeeling()}});
+ var ser=feelingSeries(feelingRange);drawLine("#feelingChart",ser,"#d6ff3f",10);
+ var all=feelingEntries(), vals=all.slice(-30).map(function(x){return x.value}), med=median(vals);
+ var dev=med==null?0:Math.sqrt(vals.reduce(function(a,x){return a+Math.pow(x-med,2)},0)/(vals.length||1));
+ $("#feelingMeta").textContent=all.length?(all.length+" Check-ins · Median "+med.toFixed(1)+" · Schwankung "+dev.toFixed(1)):"Noch keine Check-ins.";
+}
+$("#feelingAdd").onclick=function(){var sc=$("#feelingScale"),tags=$("#emotionTags"),save=$("#saveFeeling");sc.style.display="grid";tags.style.display="flex";save.style.display="block";sc.innerHTML=Array.from({length:10},function(_,i){var n=i+1;return '<button class="feelBtn '+(n===feelingDraft?"active":"")+'" data-feel="'+n+'">'+n+'</button>'}).join("");tags.innerHTML=["ruhig","motiviert","glücklich","müde","gestresst","traurig","wütend","ängstlich"].map(function(x){return '<button class="emotionTag" data-emotion="'+x+'">'+x+'</button>'}).join("");$$("[data-feel]").forEach(function(b){b.onclick=function(){feelingDraft=+this.dataset.feel;$$("[data-feel]").forEach(function(x){x.classList.toggle("active",+x.dataset.feel===feelingDraft)})}});$$("[data-emotion]").forEach(function(b){b.onclick=function(){feelingEmotion=this.dataset.emotion;$$("[data-emotion]").forEach(function(x){x.classList.toggle("active",x.dataset.emotion===feelingEmotion)})}})};
+$("#saveFeeling").onclick=function(){if(!state.feelings[day])state.feelings[day]=[];state.feelings[day].push({value:feelingDraft,emotion:feelingEmotion,ts:new Date().toISOString()});save();$("#feelingScale").style.display="none";$("#emotionTags").style.display="none";this.style.display="none";feelingEmotion="";renderFeeling();toast("Feeling gespeichert")};
+
 function renderHealth(){var h=dayScore(day);state.health[day]=h.score;var steps=state.steps[day]||0;$("#steps").value=steps||"";$("#healthScore").textContent=h.score.toFixed(1);$("#gaugeScore").textContent=h.score.toFixed(1);var gaugeMin=60,gaugeMax=140,clamped=Math.max(gaugeMin,Math.min(gaugeMax,h.score)),y=(gaugeMax-clamped)/(gaugeMax-gaugeMin)*100,refY=(gaugeMax-100)/(gaugeMax-gaugeMin)*100;$("#healthGauge .ref").style.top=refY+"%";var candle=$("#healthCandle"),wick=$("#healthWick"),delta=h.score-100;var top=Math.min(y,refY),height=Math.max(5,Math.abs(y-refY));candle.style.top=top+"%";candle.style.height=height+"%";candle.classList.toggle("down",delta<0);wick.style.top=Math.max(2,top-7)+"%";wick.style.height=Math.min(96, height+14)+"%";$("#healthCats").innerHTML='<span class="chip">Ernährung '+Math.round(h.nutrition*100)+'%</span><span class="chip">Bewegung '+Math.round(h.move*100)+'%</span><span class="chip">Training '+Math.round(h.intensity*100)+'%</span>';var vals=Object.entries(state.health).sort().slice(-90);drawLine("#healthChart",vals,"#73e28c",140);$("#healthTrend").textContent=vals.length>1?(vals[vals.length-1][1]>=vals[0][1]?"↑ stabiler Trend":"↓ zuletzt schwächer"):"Tracking startet heute";
-if(steps>=40000&&!state.memories.some(function(m){return m.date===day&&m.type==="steps"})){state.memories.push({date:day,type:"steps",text:steps.toLocaleString("de-DE")+" Schritte"});save()}$("#memories").innerHTML=state.memories.length?state.memories.slice(-5).reverse().map(function(m){return '<div style="padding:7px 0">● '+m.date+' · '+m.text+'</div>'}).join(""):"Noch keine besonderen Tage.";
+if(steps>=40000&&!state.memories.some(function(m){return m.date===day&&m.type==="steps"})){state.memories.push({date:day,type:"steps",text:steps.toLocaleString("de-DE")+" Schritte"});save()}$("#memories").innerHTML=(function(){var ms=autoMemories(day,h);return ms.length?'<div class="memoryBadges">'+ms.map(function(x){return '<span class="memoryBadge">'+x+'</span>'}).join("")+'</div>':'<span class="muted small">Noch keine besonderen Marker heute.</span>'})();
 renderCoach()}
 $("#steps").onchange=function(){state.steps[day]=Math.max(0,+this.value||0);save();renderHealth()};
 function renderCoach(){var keys=[["Vitamin C","vc"],["Eisen","iron"],["Selen","selenium"],["Jod","iodine"],["Magnesium","magnesium"],["Calcium","calcium"],["Vitamin B12","b12"],["Vitamin D","vitD"]],r=refs(),dates=Object.keys(state.foodLog).sort().slice(-7),alerts=[];keys.forEach(function(pair){if(dates.length<3)return;var avg=dates.reduce(function(a,d){return a+Math.min(1,totalsFor(d)[pair[1]]/r[pair[1]])},0)/dates.length;if(avg<.55)alerts.push(pair[0])});$("#coach").innerHTML=alerts.length?alerts.slice(0,3).map(function(n){return '<div style="padding:10px 0;border-bottom:1px solid #20242a"><b>'+n+' könnte etwas Aufmerksamkeit gebrauchen.</b><div class="small muted">Deine erfasste Zufuhr war über mehrere Tage eher niedrig.</div></div>'}).join(""):'<div class="small muted">Noch kein längerfristiger Hinweis. Der Coach wartet auf mehrere Tage Daten.</div>'}
@@ -213,7 +326,21 @@ function renderCoach(){var keys=[["Vitamin C","vc"],["Eisen","iron"],["Selen","s
 /* Gym + cardio */
 var muscleMap={"Chest Press": "Primär: Brust · Sekundär: Trizeps, vordere Schulter · Muster: horizontaler Push", "Incline Chest Press": "Primär: obere Brust · Sekundär: Trizeps, vordere Schulter · Muster: schräger Push", "Pec Deck": "Primär: Brust · Sekundär: vordere Schulter · Muster: horizontale Adduktion", "Shoulder Press": "Primär: Schulter · Sekundär: Trizeps · Muster: vertikaler Push", "Lateral Raise": "Primär: seitliche Schulter · Muster: Schulterabduktion", "Triceps Pushdown": "Primär: Trizeps · Muster: Ellenbogenstreckung", "Lat Pulldown": "Primär: Latissimus · Sekundär: Bizeps · Muster: vertikaler Pull", "Row": "Primär: mittlerer Rücken · Sekundär: Latissimus, Bizeps · Muster: horizontaler Pull", "High Row": "Primär: oberer Rücken/Lat · Sekundär: Bizeps · Muster: diagonaler Pull", "Reverse Pec Deck": "Primär: hintere Schulter · Sekundär: oberer Rücken", "Preacher Curl": "Primär: Bizeps · Muster: Ellenbogenbeugung", "Hack Squat": "Primär: Quadrizeps · Sekundär: Gesäß · Muster: Kniebeuge", "Leg Curl": "Primär: Beinbeuger · Muster: Kniebeugung", "Leg Extension": "Primär: Quadrizeps · Muster: Kniestreckung", "Adductor": "Primär: Adduktoren · Muster: Hüftadduktion", "Calf Raise": "Primär: Waden · Muster: Plantarflexion", "Incline Press": "Primär: obere Brust · Sekundär: Trizeps, vordere Schulter", "Leg Press": "Primär: Quadrizeps/Gluteus · Sekundär: Beinbeuger", "Hip Hinge": "Primär: Beinbeuger/Gluteus · Sekundär: Rückenstrecker"};
 var workouts=[["PUSH",[["Chest Press",3],["Incline Chest Press",3],["Pec Deck",2],["Shoulder Press",3],["Lateral Raise",3],["Triceps Pushdown",3]]],["PULL",[["Lat Pulldown",3],["Row",3],["High Row",2],["Reverse Pec Deck",3],["Preacher Curl",3]]],["LEGS",[["Hack Squat",3],["Leg Curl",3],["Leg Extension",3],["Adductor",2],["Calf Raise",4]]],["RECOVERY",[]],["UPPER",[["Incline Press",3],["Lat Pulldown",3],["Row",3],["Lateral Raise",3]]],["LOWER",[["Leg Press",3],["Hip Hinge",3],["Leg Curl",3],["Calf Raise",4]]],["RECOVERY",[]]];
-function renderGym(){var w=workouts[state.workout];$("#workoutName").textContent=w[0];$("#exercises").innerHTML=w[1].length?w[1].map(function(e){var rows="";for(var i=1;i<=e[1];i++)rows+='<div class="sets"><b>'+i+'</b><input placeholder="kg" inputmode="decimal"><input placeholder="reps" inputmode="numeric"><input type="checkbox"></div>';return '<div class="exercise" data-ex="'+e[0]+'"><div class="exerciseHead"><h3>'+e[0]+'　⌄</h3></div><div class="muscleInfo">'+(muscleMap[e[0]]||"Muskelgruppen-Info folgt.")+'</div>'+rows+'</div>'}).join(""):'<div class="muted small">Recovery Day – Cardio, Mobility oder kompletter Ruhetag.</div>';$$(".exercise").forEach(function(ex){ex.querySelector(".exerciseHead").onclick=function(){ex.querySelector(".muscleInfo").classList.toggle("open")};ex.querySelectorAll(".sets").forEach(function(row,i){var inputs=row.querySelectorAll("input");inputs[2].onchange=function(){if(!this.checked)return;var kg=parseFloat(inputs[0].value.replace(",",".")),reps=parseInt(inputs[1].value);if(!kg||!reps){this.checked=false;return toast("kg + reps fehlen")}state.logs.push({date:day,exercise:ex.dataset.ex,set:i+1,kg:kg,reps:reps,e1rm:kg*(1+reps/30)});save();renderAll()}})});renderCardio()}
+
+function muscleDiagram(name){
+ var push=/Press|Pec|Triceps|Lateral/.test(name), pull=/Pulldown|Row|Reverse|Curl/.test(name), legs=/Squat|Leg|Adductor|Calf|Hinge/.test(name);
+ var chest=/Chest|Incline|Pec/.test(name), shoulder=/Shoulder|Lateral|Reverse/.test(name), arms=/Triceps|Curl/.test(name);
+ var svg='<svg class="muscleSvg" viewBox="0 0 180 210" aria-label="Muskelkarte"><circle class="body" cx="90" cy="24" r="16"/><path class="body" d="M62 46 Q90 36 118 46 L126 112 Q111 126 102 117 L101 188 L82 188 L79 118 Q66 127 54 112Z"/><path class="body" d="M61 52 L39 110 L50 115 L72 70M119 52 L141 110 L130 115 L108 70"/><path class="body" d="M82 187 L68 205 M101 187 L113 205"/>';
+ if(chest)svg+='<ellipse class="primary" cx="78" cy="63" rx="15" ry="10"/><ellipse class="primary" cx="102" cy="63" rx="15" ry="10"/>';
+ if(shoulder)svg+='<circle class="primary" cx="62" cy="55" r="9"/><circle class="primary" cx="118" cy="55" r="9"/>';
+ if(arms)svg+='<path class="primary" d="M55 69 L43 102 L51 105 L65 72Z"/><path class="primary" d="M125 69 L137 102 L129 105 L115 72Z"/>';
+ if(pull)svg+='<path class="primary" d="M70 55 Q90 46 110 55 L113 100 Q90 114 67 100Z"/>';
+ if(legs)svg+='<path class="primary" d="M68 112 L82 112 L82 180 L70 180Z"/><path class="primary" d="M99 112 L113 112 L109 180 L99 180Z"/>';
+ if(push&&!chest&&!shoulder&&!arms)svg+='<ellipse class="primary" cx="90" cy="67" rx="26" ry="14"/>';
+ return svg+'</svg><div class="muscleLegend">ROT = HAUPTBELASTUNG · ORANGE = MITARBEIT</div>';
+}
+
+function renderGym(){var w=workouts[state.workout];$("#workoutName").textContent=w[0];$("#exercises").innerHTML=w[1].length?w[1].map(function(e){var rows="";for(var i=1;i<=e[1];i++)rows+='<div class="sets"><b>'+i+'</b><input placeholder="kg" inputmode="decimal"><input placeholder="reps" inputmode="numeric"><input type="checkbox"></div>';return '<div class="exercise" data-ex="'+e[0]+'"><div class="exerciseHead"><h3>'+e[0]+'</h3><span class="exerciseChevron">⌄</span></div><div class="muscleInfo">'+muscleDiagram(e[0])+'</div>'+rows+'</div>'}).join(""):'<div class="muted small">Recovery Day – Cardio, Mobility oder kompletter Ruhetag.</div>';$$(".exercise").forEach(function(ex){ex.querySelector(".exerciseHead").onclick=function(){ex.classList.toggle("open");ex.querySelector(".muscleInfo").classList.toggle("open")};ex.querySelectorAll(".sets").forEach(function(row,i){var inputs=row.querySelectorAll("input");inputs[2].onchange=function(){if(!this.checked)return;var kg=parseFloat(inputs[0].value.replace(",",".")),reps=parseInt(inputs[1].value);if(!kg||!reps){this.checked=false;return toast("kg + reps fehlen")}state.logs.push({date:day,exercise:ex.dataset.ex,set:i+1,kg:kg,reps:reps,e1rm:kg*(1+reps/30)});save();renderAll()}})});renderCardio()}
 $("#nextWorkout").onclick=function(){state.workout=(state.workout+1)%workouts.length;save();renderGym()};
 var cardioTypes=["Walking","Jogging","Cycling","Rope Jumping","Stairmaster","Crosstrainer","Rowing","Swimming","Custom"],selectedCardio="Walking";$("#cardioChoices").innerHTML=cardioTypes.map(function(x){return '<button data-cardio="'+x+'">'+x+'</button>'}).join("");$$("[data-cardio]").forEach(function(b){b.onclick=function(){selectedCardio=this.dataset.cardio;$$("[data-cardio]").forEach(function(x){x.classList.remove("primary")});this.classList.add("primary")}});$("#addCardio").onclick=function(){$("#cardioModal").classList.add("open")};$("#closeCardio").onclick=function(){$("#cardioModal").classList.remove("open")};$("#saveCardio").onclick=function(){(state.cardio[day]||(state.cardio[day]=[])).push({type:selectedCardio,minutes:+$("#cardioMinutes").value||0,rpe:Math.min(10,Math.max(1,+$("#cardioRpe").value||5))});save();$("#cardioModal").classList.remove("open");renderAll();toast("Cardio gespeichert")};
 function renderCardio(){var a=state.cardio[day]||[];$("#cardioLog").innerHTML=a.length?a.map(function(x){return '<div style="padding:8px 0;border-bottom:1px solid #20242a"><b>'+x.type+'</b> · '+x.minutes+' min · Intensität '+x.rpe+'/10</div>'}).join(""):"Noch kein Cardio."}
@@ -235,7 +362,7 @@ $("#submitGrat").onclick=function(){state.grat[day]={done:true,items:[$("#g1").v
 /* nav */
 function nav(){var id=location.hash.slice(1)||"food";if(!$("#"+id))id="food";$$(".page").forEach(function(p){p.classList.remove("active")});$$(".tabs a").forEach(function(a){a.classList.remove("active")});$("#"+id).classList.add("active");$("#tab-"+id).classList.add("active");if(id==="health")renderHealth();if(id==="progress")renderProgress()}
 window.addEventListener("hashchange",nav);
-function renderAll(){renderFood();renderSchedule();renderGym();renderProgress()}
+function renderAll(){renderFood();renderSchedule();renderGym();renderProgress();renderFeeling();renderFoodDateNav();}
 renderAll();nav();
 })();
 </script></body></html>
