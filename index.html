@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#050607"><title>FORGEFIT</title>
+<!-- FORGEFIT V5.1.1: persistent editable gym sets per calendar date -->
 <style>
 :root{--bg:#050607;--panel:#0d0f12;--panel2:#14171b;--line:#242930;--text:#f7f8fa;--muted:#8c949f;--lime:#d8ff4f;--green:#73e28c;--red:#ff5e66;--gold:#ffd36a}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}
@@ -633,14 +634,32 @@ function renderGym(){
   Array.from(ex.querySelectorAll(".sets")).forEach(function(row,i){
    var inputs=row.querySelectorAll("input");
    if(inputs.length<3)return;
+   var setNo=i+1;
+   var existing=state.logs.filter(function(l){return l.date===gd&&l.exercise===ex.dataset.ex&&Number(l.set)===setNo})[0];
+   if(existing){
+    inputs[0].value=existing.kg;
+    inputs[1].value=existing.reps;
+    inputs[2].checked=true;
+   }
+   function saveSet(){
+    var kg=parseFloat(String(inputs[0].value||"").replace(",",".")),reps=parseInt(inputs[1].value,10);
+    var idx=state.logs.findIndex(function(l){return l.date===gd&&l.exercise===ex.dataset.ex&&Number(l.set)===setNo});
+    if(!inputs[2].checked){if(idx>=0){state.logs.splice(idx,1);save();renderProgress()}return}
+    if(!kg||!reps)return;
+    var entry={date:gd,exercise:ex.dataset.ex,set:setNo,kg:kg,reps:reps,e1rm:kg*(1+reps/30)};
+    if(idx>=0)state.logs[idx]=entry;else state.logs.push(entry);
+    state.gymDayByDate[gd]=wi;
+    save();renderProgress();
+   }
    inputs[2].onchange=function(){
-    if(!this.checked)return;
-    var kg=parseFloat(String(inputs[0].value||"").replace(",",".")),
-        reps=parseInt(inputs[1].value,10);
-    if(!kg||!reps){this.checked=false;return toast("kg + reps fehlen")}
-    state.logs.push({date:gd,exercise:ex.dataset.ex,set:i+1,kg:kg,reps:reps,e1rm:kg*(1+reps/30)});
-    save(); renderProgress();
+    if(this.checked){
+     var kg=parseFloat(String(inputs[0].value||"").replace(",",".")),reps=parseInt(inputs[1].value,10);
+     if(!kg||!reps){this.checked=false;return toast("kg + reps fehlen")}
+    }
+    saveSet();renderGym();
    };
+   inputs[0].onchange=saveSet;
+   inputs[1].onchange=saveSet;
   });
  });
  renderCardio();
