@@ -34,7 +34,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .toast{position:fixed;z-index:999;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:#1b1f24;color:white;padding:10px 14px;border:1px solid #353b44;border-radius:999px;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:520px){.grid2,.grid3,.nutgrid{grid-template-columns:1fr}.score{font-size:42px}}
 
-/* V5.0.3 polish */
+/* V5.0.4 polish */
 .card{padding:14px;border-radius:18px}.big{font-size:34px}.score{font-size:40px}
 .swipe-bg .del,.swipe-bg .add{min-width:68px;background:transparent;font-size:0}
 .swipe-bg .del:after{content:"⌫";font-size:24px;color:var(--red);font-weight:900}
@@ -55,7 +55,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .profileManager{display:flex;gap:7px;align-items:center}.profileManager select{flex:1}
 @media(max-width:520px){.sheet{margin:2vh auto}.amountCompact{margin:18vh auto}.libActions{gap:6px}.libActions button{padding:9px 7px;font-size:12px}}
 
-/* V5.0.3 */
+/* V5.0.4 */
 .healthGauge{height:128px;margin:8px 0}.healthGauge .gaugeScore{font-size:25px;top:8px}.healthGauge .candle{width:18px}
 #healthChart{height:105px!important}
 .foodDateNav{display:flex;align-items:center;gap:7px;margin:0 0 12px}.foodDateNav button{padding:8px 10px}.foodDateStrip{display:flex;gap:6px;overflow:hidden;flex:1}.foodDay{min-width:62px;text-align:center;padding:7px 5px;border-radius:12px;background:#111419;font-size:11px;color:#9299a3}.foodDay.active{background:var(--accent);color:#07090b;font-weight:900}.foodDay .dn{display:block;font-size:16px;margin-top:2px}
@@ -65,7 +65,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .muscleInfo{padding:8px;background:#0b0d10}.muscleSvg{display:block;width:100%;max-width:230px;height:190px;margin:auto}.muscleSvg .body{fill:#252a30;stroke:#69717b;stroke-width:2}.muscleSvg .primary{fill:#ff5d67}.muscleSvg .secondary{fill:#ffb15d;opacity:.8}.muscleLegend{text-align:center;font-size:10px;color:#8d949e;margin-top:2px}
 .memoryBadges{display:flex;gap:7px;flex-wrap:wrap}.memoryBadge{padding:8px 10px;border-radius:999px;background:#171b20;font-size:11px;font-weight:800}
 
-/* V5.0.3.1 */
+/* V5.0.4.1 */
 .foodDateNav{gap:5px}.foodDateNav>button{min-width:42px}.foodDateStrip{justify-content:center;gap:5px}.foodDay{min-width:54px;padding:6px 4px}.foodDay.active{box-shadow:inset 0 0 0 1px #d6ff3f}
 #foodToday{font-size:11px;padding:7px 9px!important}
 .taskTypeBadge{font-size:10px;padding:3px 6px;border-radius:999px;background:#20252b;color:#aab2bc;margin-left:auto}.todoBadge{color:var(--accent)}
@@ -104,7 +104,7 @@ button.primary,.primary{background:var(--accent);color:#050607;border:0}
 .nutritionTable .row{position:relative;overflow:hidden}.nutritionTable .row:before,.nutritionTable .row:after{content:none!important}
 @media(max-width:390px){main{padding-left:14px;padding-right:14px}.big{font-size:34px}.brand{font-size:23px}}
 
-/* V5.0.3.1 — swipe action isolation */
+/* V5.0.4.1 — swipe action isolation */
 .swipe{background:transparent}
 .swipe-bg{z-index:0;pointer-events:none}
 .swipe-bg .del:after,.swipe-bg .add:after{opacity:0;transform:scale(.72);transition:opacity .12s ease,transform .12s ease}
@@ -114,7 +114,7 @@ button.primary,.primary{background:var(--accent);color:#050607;border:0}
 .food-detail{position:relative;z-index:2;background:var(--bg)!important}
 
 
-/* V5.0.3 gym restore */
+/* V5.0.4 gym restore */
 .gymWeek{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0 16px}
 .gymDay{border:0;background:transparent;padding:8px 2px;font-size:10px;color:#727a84;border-bottom:1px solid #22272d;border-radius:0}
 .gymDay.active{color:var(--text);border-bottom:2px solid var(--accent)}
@@ -125,7 +125,7 @@ button.primary,.primary{background:var(--accent);color:#050607;border:0}
 .muscleInfo{border-radius:14px!important;background:#090b0d!important;border:1px solid #1b2025}
 
 
-/* V5.0.3 — Gym critical render repair */
+/* V5.0.4 — Gym critical render repair */
 #exercises{display:block!important;min-height:40px}
 #exercises .exercise{display:block!important;border-bottom:1px solid #20252b;padding:12px 0!important}
 #exercises .exerciseHead{display:flex!important;width:100%;align-items:center;justify-content:space-between;
@@ -473,6 +473,51 @@ var workouts=[
 if(!isFinite(Number(state.workout)))state.workout=0;
 state.workout=Math.max(0,Math.min(workouts.length-1,Number(state.workout)||0));
 
+
+function muscleDiagram(name){
+ var n=String(name||"").toLowerCase();
+ var front=[],back=[];
+ function has(x){return n.indexOf(x)>=0}
+ if(has("chest")||has("pec"))front.push("chest");
+ if(has("shoulder")||has("lateral"))front.push("shoulders");
+ if(has("triceps")||has("curl"))front.push("arms");
+ if(has("pulldown")||has("row"))back.push("back","arms");
+ if(has("reverse pec"))back.push("rearShoulders","back");
+ if(has("squat")||has("leg press")||has("leg extension")||has("adductor"))front.push("quads");
+ if(has("squat")||has("leg press"))back.push("glutes");
+ if(has("leg curl")||has("romanian")||has("hinge"))back.push("hamstrings","glutes");
+ if(has("calf")){front.push("calves");back.push("calves")}
+ if(has("crunch")||has("leg raise")||has("core"))front.push("abs");
+
+ function cls(arr,key){return arr.indexOf(key)>=0?"primary":"body"}
+ function body(view,arr){
+  var female=state.profile&&state.profile.sex==="female";
+  var shoulder=female?25:29, waist=female?16:19, hip=female?23:20;
+  var q='<svg class="muscleSvg" viewBox="0 0 120 230" role="img" aria-label="'+(view==="front"?"Vorderansicht":"Rückansicht")+'">';
+  q+='<ellipse class="body" cx="60" cy="18" rx="12" ry="15"/>';
+  q+='<path class="body" d="M'+(60-shoulder)+' 43 Q60 34 '+(60+shoulder)+' 43 L'+(60+waist)+' 108 Q60 119 '+(60-waist)+' 108Z"/>';
+  q+='<path class="body" d="M'+(60-hip)+' 106 Q60 119 '+(60+hip)+' 106 L76 210 L65 210 L60 137 L55 210 L44 210Z"/>';
+  q+='<path class="body" d="M'+(60-shoulder+2)+' 47 L20 119 L29 123 L'+(60-waist-1)+' 67 M'+(60+shoulder-2)+' 47 L100 119 L91 123 L'+(60+waist+1)+' 67"/>';
+  if(view==="front"){
+   q+='<path class="'+cls(arr,"chest")+'" d="M39 50 Q49 43 59 49 L58 70 Q47 74 38 65Z"/><path class="'+cls(arr,"chest")+'" d="M81 50 Q71 43 61 49 L62 70 Q73 74 82 65Z"/>';
+   q+='<ellipse class="'+cls(arr,"shoulders")+'" cx="33" cy="51" rx="8" ry="10"/><ellipse class="'+cls(arr,"shoulders")+'" cx="87" cy="51" rx="8" ry="10"/>';
+   q+='<path class="'+cls(arr,"arms")+'" d="M29 62 L21 110 L29 113 L38 67Z"/><path class="'+cls(arr,"arms")+'" d="M91 62 L99 110 L91 113 L82 67Z"/>';
+   q+='<path class="'+cls(arr,"abs")+'" d="M51 74 L69 74 L68 105 L52 105Z"/>';
+   q+='<path class="'+cls(arr,"quads")+'" d="M41 118 L56 119 L53 177 L43 177Z"/><path class="'+cls(arr,"quads")+'" d="M64 119 L79 118 L77 177 L67 177Z"/>';
+   q+='<path class="'+cls(arr,"calves")+'" d="M43 179 L53 179 L51 210 L44 210Z"/><path class="'+cls(arr,"calves")+'" d="M67 179 L77 179 L76 210 L69 210Z"/>';
+  }else{
+   q+='<path class="'+cls(arr,"back")+'" d="M39 48 Q60 39 81 48 L75 96 Q60 105 45 96Z"/>';
+   q+='<ellipse class="'+cls(arr,"rearShoulders")+'" cx="33" cy="51" rx="8" ry="10"/><ellipse class="'+cls(arr,"rearShoulders")+'" cx="87" cy="51" rx="8" ry="10"/>';
+   q+='<path class="'+cls(arr,"arms")+'" d="M29 62 L21 110 L29 113 L38 67Z"/><path class="'+cls(arr,"arms")+'" d="M91 62 L99 110 L91 113 L82 67Z"/>';
+   q+='<ellipse class="'+cls(arr,"glutes")+'" cx="50" cy="119" rx="11" ry="12"/><ellipse class="'+cls(arr,"glutes")+'" cx="70" cy="119" rx="11" ry="12"/>';
+   q+='<path class="'+cls(arr,"hamstrings")+'" d="M41 132 L56 132 L53 177 L43 177Z"/><path class="'+cls(arr,"hamstrings")+'" d="M64 132 L79 132 L77 177 L67 177Z"/>';
+   q+='<path class="'+cls(arr,"calves")+'" d="M43 179 L53 179 L51 210 L44 210Z"/><path class="'+cls(arr,"calves")+'" d="M67 179 L77 179 L76 210 L69 210Z"/>';
+  }
+  return q+'</svg>';
+ }
+ return '<div class="anatomyWrap"><div>'+body("front",front)+'<div class="anatomyLabel">VORNE</div></div><div>'+body("back",back)+'<div class="anatomyLabel">HINTEN</div></div></div>';
+}
+
 function renderGym(){
  var wi=Number(state.workout)||0;
  if(wi<0||wi>=workouts.length)wi=0;
@@ -546,7 +591,7 @@ $("#submitGrat").onclick=function(){state.grat[day]={done:true,items:[$("#g1").v
 /* nav */
 function nav(){var id=location.hash.slice(1)||"food";if(!$("#"+id))id="food";$$(".page").forEach(function(p){p.classList.remove("active")});$$(".tabs a").forEach(function(a){a.classList.remove("active")});$("#"+id).classList.add("active");$("#tab-"+id).classList.add("active");if(id==="health")renderHealth();if(id==="progress")renderProgress()}
 window.addEventListener("hashchange",nav);
-function renderAll(){renderFood();renderSchedule();renderGym();renderProgress();renderFeeling();renderFoodDateNav();renderCoach();}
+function renderAll(){renderFood();renderSchedule();try{renderGym()}catch(err){var x=$("#exercises");if(x)x.innerHTML='<div style="padding:14px 0;color:#ff6670">Gym konnte nicht geladen werden.</div>';console.error(err)}renderProgress();renderFeeling();renderFoodDateNav();renderCoach();}
 if($("#createFoodTop"))$("#createFoodTop").onclick=function(){var old=$("#createFood");if(old){old.click()}else{var m=$("#customFoodModal");if(m)m.classList.add("open")}};
 renderAll();nav();
 })();
