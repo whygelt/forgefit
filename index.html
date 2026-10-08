@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#050607"><title>FORGEFIT</title>
+<meta name="theme-color" content="#050607"><title>FORGEFIT 5.1.7</title>
 <!-- FORGEFIT V5.1.1: persistent editable gym sets per calendar date -->
 <style>
 :root{--bg:#050607;--panel:#0d0f12;--panel2:#14171b;--line:#242930;--text:#f7f8fa;--muted:#8c949f;--lime:#d8ff4f;--green:#73e28c;--red:#ff5e66;--gold:#ffd36a}
@@ -72,7 +72,7 @@ canvas{width:100%;height:185px;background:#0a0c0f;border-radius:16px;margin-top:
 .taskTypeBadge{font-size:10px;padding:3px 6px;border-radius:999px;background:#20252b;color:#aab2bc;margin-left:auto}.todoBadge{color:var(--accent)}
 .todoSection{margin-top:12px;padding-top:12px;border-top:1px solid #20242a}.todoAge{font-size:10px;color:#858d97}
 .taskChoice{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.taskChoice button.active{background:var(--accent);color:#080a0c}
-.anatomyWrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}.anatomyFigure{width:100%;height:250px}.anatomyFigure .skin{fill:#333940;stroke:#7e8791;stroke-width:1.4}.anatomyFigure .muscle{fill:#59616a;stroke:#15181c;stroke-width:.7}.anatomyFigure .hit{fill:#ff5c66}.anatomyFigure .assist{fill:#f3a64b}.anatomyLabel{text-align:center;font-size:10px;color:#8e96a0;margin-top:-4px}.muscleLegend{margin-top:7px}
+.anatomyWrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}.anatomyFigure{width:100%;height:250px}.anatomyFigure .skin{fill:#333940;stroke:#7e8791;stroke-width:1.4}.anatomyFigure .muscle{fill:#59616a;stroke:#15181c;stroke-width:.7}.anatomyFigure .hit{fill:#ff5c66}.anatomyFigure .assist{fill:#f3a64b}.anatomyFigure .muscle{fill:#444d57}.anatomyFigure .hit,.anatomyFigure .assist{stroke:#15181c;stroke-width:.85}.anatomyLabel{text-align:center;font-size:10px;color:#8e96a0;margin-top:-4px}.muscleLegend{margin-top:7px}
 .exerciseHead{padding:9px 2px}.exerciseHead:after{content:"ANTIPPEN";font-size:9px;color:#7e8791;margin-left:auto;margin-right:8px}.exercise.open .exerciseHead:after{content:"SCHLIESSEN"}
 @media(max-width:390px){.foodDay{min-width:50px}.anatomyFigure{height:225px}}
 
@@ -159,7 +159,7 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 <button id="globalNext" aria-label="Nächster Tag">›</button>
 <button id="globalToday" class="globalToday">Heute</button>
 </div>
-<div class="topbar"><div class="brand">FORGEFIT</div><div id="date" class="small muted"></div></div>
+<div class="topbar"><div id="date" class="small muted"></div></div>
 
 <section id="food" class="page active"><div class="card"><div class="row between"><div><div class="small muted">HEUTE</div><div class="big" id="calories">0</div><div class="small muted" id="calGoal">/ 2200 kcal</div></div><button class="primary" id="openFood">+ Essen</button></div><div id="macroBars"></div><button class="ghost" id="toggleMicros" style="width:100%;margin-top:8px">Mikronährstoffe ↓</button><div id="micros" style="display:none"></div></div>
 <div class="sectionLabel">Gegessen</div><div class="list" id="eaten"></div>
@@ -202,7 +202,7 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 <input class="search" id="foodSearch" placeholder="Lebensmittel suchen" style="display:none">
 <div class="small muted">Tap = hinzufügen · Swipe ← = hinzufügen · Swipe → = eigenes Lebensmittel löschen</div><div class="list" id="foodLibrary" style="margin-top:10px"></div></div></div>
 
-<div class="modal" id="amountModal"><div class="sheet amountCompact"><div class="row between"><h2 id="amountTitle">Menge</h2><button id="closeAmount">✕</button></div><div class="row" style="margin:20px 0"><button id="minusAmount">−</button><input id="amount" class="amountValue" type="number" inputmode="decimal" value="100"><span class="muted">g/ml</span><button id="plusAmount">＋</button></div><button class="primary" id="confirmAmount" style="width:100%">Hinzufügen</button></div></div>
+<div class="modal" id="amountModal"><div class="sheet amountCompact"><div class="row between"><h2 id="amountTitle">Menge</h2><button id="closeAmount">✕</button></div><div class="row" style="margin:20px 0"><button id="minusAmount">−</button><input id="amount" class="amountValue" type="number" inputmode="decimal" value="100"><span class="muted" id="amountUnit">g/ml</span><button id="plusAmount">＋</button></div><div id="pieceHint" class="small muted" style="margin:-8px 0 14px"></div><button class="primary" id="confirmAmount" style="width:100%">Hinzufügen</button></div></div>
 
 <div class="modal" id="customModal"><div class="sheet"><div class="row between"><h2>Lebensmittel</h2><button id="closeCustom">✕</button></div>
 <div class="small muted" style="margin-bottom:10px">Werte pro 100 g / 100 ml</div>
@@ -245,7 +245,7 @@ var foods=[
 {name:"Haferflocken",kcal:372,p:13.5,c:59,sugar:1,fat:7,sat:1.2,fiber:10,salt:.01,vc:0,iron:4.3,selenium:20,iodine:2,magnesium:130,calcium:54,b12:0,vitD:0,folate:56,zinc:3.6,potassium:429},
 {name:"Walnüsse",kcal:654,p:15,c:14,sugar:2.6,fat:65,sat:6.1,fiber:6.7,salt:0,vc:1.3,iron:2.9,selenium:5,iodine:0,magnesium:158,calcium:98,b12:0,vitD:0,folate:98,zinc:3.1,potassium:441},
 {name:"Leinsamen",kcal:534,p:18,c:29,sugar:1.6,fat:42,sat:3.7,fiber:27,salt:.08,vc:.6,iron:5.7,selenium:25,iodine:0,magnesium:392,calcium:255,b12:0,vitD:0,folate:87,zinc:4.3,potassium:813},
-{name:"Kiwi",kcal:61,p:1.1,c:15,sugar:9,fat:.5,sat:.03,fiber:3,salt:.01,vc:93,iron:.3,selenium:.2,iodine:0,magnesium:17,calcium:34,b12:0,vitD:0,folate:25,zinc:.1,potassium:312},
+{name:"Kiwi",defaultAmount:75,unitWeight:75,kcal:61,p:1.1,c:15,sugar:9,fat:.5,sat:.03,fiber:3,salt:.01,vc:93,iron:.3,selenium:.2,iodine:0,magnesium:17,calcium:34,b12:0,vitD:0,folate:25,zinc:.1,potassium:312},
 {name:"Paprika rot",kcal:31,p:1,c:6,sugar:4.2,fat:.3,sat:.03,fiber:2.1,salt:.01,vc:128,iron:.4,selenium:.1,iodine:0,magnesium:12,calcium:7,b12:0,vitD:0,folate:46,zinc:.3,potassium:211},
 {name:"Karotte",kcal:41,p:.9,c:10,sugar:4.7,fat:.2,sat:.04,fiber:2.8,salt:.07,vc:6,iron:.3,selenium:.1,iodine:0,magnesium:12,calcium:33,b12:0,vitD:0,folate:19,zinc:.2,potassium:320},
 {name:"Kohlrabi",kcal:27,p:1.7,c:6.2,sugar:2.6,fat:.1,sat:.01,fiber:3.6,salt:.05,vc:62,iron:.4,selenium:.7,iodine:0,magnesium:19,calcium:24,b12:0,vitD:0,folate:16,zinc:.03,potassium:350},
@@ -310,10 +310,10 @@ var foods=[
 {name:"Granatapfel",kcal:83,p:1.7,c:18.7,sugar:13.7,fat:1.2,sat:0,fiber:4,salt:0,vc:10,iron:0.3,selenium:0.5,iodine:0,magnesium:12,calcium:10,b12:0,vitD:0,folate:38,zinc:0.4,potassium:236},
 {name:"Feige frisch",kcal:74,p:0.8,c:19.2,sugar:16.3,fat:0.3,sat:0,fiber:2.9,salt:0,vc:2,iron:0.4,selenium:0.2,iodine:0,magnesium:17,calcium:35,b12:0,vitD:0,folate:6,zinc:0.2,potassium:232},
 // Grundnahrungsmittel · Werte sind typische Näherungswerte pro 100 g/ml
-{name:"Ei · klein (S)",defaultAmount:50,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
-{name:"Ei · mittel (M)",defaultAmount:60,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
-{name:"Ei · groß (L)",defaultAmount:70,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
-{name:"Ei · sehr groß (XL)",defaultAmount:80,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
+{name:"Ei · klein (S)",defaultAmount:43,unitWeight:43,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
+{name:"Ei · mittel (M)",defaultAmount:53,unitWeight:53,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
+{name:"Ei · groß (L)",defaultAmount:63,unitWeight:63,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
+{name:"Ei · sehr groß (XL)",defaultAmount:73,unitWeight:73,kcal:143,p:12.6,c:.7,sugar:.4,fat:9.5,sat:3.1,fiber:0,salt:.36,vc:0,iron:1.8,selenium:30.7,iodine:47,magnesium:12,calcium:56,b12:1.1,vitD:2,folate:47,zinc:1.3,potassium:138},
 {name:"Reis weiß · trocken",kcal:350,p:7,c:78,sugar:.2,fat:.7,sat:.2,fiber:1.3,salt:.01,vc:0,iron:.8,selenium:7.5,iodine:0,magnesium:25,calcium:10,b12:0,vitD:0,folate:9,zinc:1.1,potassium:115},
 {name:"Reis weiß · gekocht",kcal:130,p:2.7,c:28.2,sugar:.1,fat:.3,sat:.1,fiber:.4,salt:.01,vc:0,iron:.2,selenium:7.5,iodine:0,magnesium:12,calcium:10,b12:0,vitD:0,folate:3,zinc:.5,potassium:35},
 {name:"Vollkornreis · trocken",kcal:360,p:7.5,c:74,sugar:.7,fat:2.7,sat:.6,fiber:3.5,salt:.01,vc:0,iron:1.5,selenium:15,iodine:0,magnesium:110,calcium:23,b12:0,vitD:0,folate:20,zinc:2,potassium:250},
@@ -353,6 +353,7 @@ var foods=[
 {name:"Whey Isolat",defaultAmount:30,kcal:350,p:82,c:2.5,sugar:.5,fat:.3,sat:.2,fiber:0,salt:.21,vc:0,iron:0,selenium:0,iodine:0,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0}
 ];
 function db(){return foods.concat(state.customFoods)}
+function portionInfo(f){var w=Number(f.unitWeight);return w>0?"1 Stück ≈ "+w+" g · "+Math.round(Number(f.kcal||0)*w/100)+" kcal · "+(Number(f.p||0)*w/100).toFixed(1)+" g Protein":""}
 function refs(){return {p:state.profile.weight*1.8,c:220,fat:70,sugar:50,fiber:30,vc:100,iron:state.profile.sex==="female"?15:10,selenium:70,iodine:150,magnesium:350,calcium:1000,b12:4,vitD:20,folate:300,zinc:state.profile.sex==="female"?10:14,potassium:4000}}
 function entries(d){return state.foodLog[d||day]||[]}
 function totalsFor(d){var t={kcal:0,p:0,c:0,sugar:0,fat:0,sat:0,fiber:0,salt:0,vc:0,iron:0,selenium:0,iodine:0,magnesium:0,calcium:0,b12:0,vitD:0,folate:0,zinc:0,potassium:0};(state.foodLog[d]||[]).forEach(function(e){var f=db().find(function(x){return x.name===e.name});if(!f)return;var grams=Number(e.g);if(!isFinite(grams))grams=0;var m=grams/100;Object.keys(t).forEach(function(k){var n=Number(f[k]);if(!isFinite(n))n=0;t[k]+=n*m})});Object.keys(t).forEach(function(k){if(!isFinite(t[k]))t[k]=0});return t}
@@ -416,6 +417,7 @@ front.addEventListener("click",function(){if(!moved&&actions.tap)actions.tap()})
 
 /* Food library */
 var pendingFood=null;
+/* Portion weights are edible weights. Nutrients in foods[] remain per 100 g. */
 
 
 var foodCategoryRules=[
@@ -450,16 +452,19 @@ function renderFoodPresets(){
  $$("[data-pfood]").forEach(function(r){r.onclick=function(){chooseFood(+this.dataset.pfood)}})
 }
 
-function renderLibrary(){var showSearch=db().length>10;$("#foodSearch").style.display=showSearch?"block":"none";if(!showSearch)$("#foodSearch").value="";var q=$("#foodSearch").value.toLowerCase().trim();var list=db().map(function(f,i){return {f:f,i:i,custom:i>=foods.length}}).filter(function(x){return x.f.name.toLowerCase().indexOf(q)>=0});$("#foodLibrary").innerHTML=list.map(function(x){return '<div class="swipe" data-lib="'+x.i+'"><div class="swipe-bg"><div class="del">'+(x.custom?"Löschen":"")+'</div><div class="add">＋</div></div><div class="swipe-front"><div class="food-title">'+x.f.name+'</div><div class="food-sub">'+Math.round(x.f.kcal)+' kcal / 100 g · '+x.f.p+' g Protein · '+x.f.c+' g Kohlenhydrate · '+x.f.fat+' g Fett</div></div></div>'}).join("");$$("[data-lib]").forEach(function(row){var idx=+row.dataset.lib,custom=idx>=foods.length;bindSwipe(row,{left:function(){chooseFood(idx)},right:custom?function(){state.customFoods.splice(idx-foods.length,1);save();renderLibrary();toast("Lebensmittel gelöscht")}:null,tap:function(){chooseFood(idx)}})})}
-function chooseFood(i){pendingFood=db()[i];$("#amountTitle").textContent=pendingFood.name;$("#amount").value=pendingFood.defaultAmount||100;$("#amountModal").classList.add("open")}
+function renderLibrary(){var showSearch=db().length>10;$("#foodSearch").style.display=showSearch?"block":"none";if(!showSearch)$("#foodSearch").value="";var q=$("#foodSearch").value.toLowerCase().trim();var list=db().map(function(f,i){return {f:f,i:i,custom:i>=foods.length}}).filter(function(x){return x.f.name.toLocaleLowerCase("de-DE").indexOf(q)>=0});
+// Treffer am Wortanfang vor Treffern mitten im Wort; kurze Namen zuerst.
+if(q){list.sort(function(a,b){function rank(x){var n=x.f.name.toLocaleLowerCase("de-DE"),pos=n.indexOf(q);if(n===q)return 0;if(pos===0)return 1;if(pos>0&&!/[\p{L}\p{N}]/u.test(n.charAt(pos-1)))return 2;return 3}return rank(a)-rank(b)||a.f.name.length-b.f.name.length||a.f.name.localeCompare(b.f.name,"de-DE")})}$("#foodLibrary").innerHTML=list.map(function(x){return '<div class="swipe" data-lib="'+x.i+'"><div class="swipe-bg"><div class="del">'+(x.custom?"Löschen":"")+'</div><div class="add">＋</div></div><div class="swipe-front"><div class="food-title">'+x.f.name+'</div><div class="food-sub">'+(x.f.unitWeight?(Math.round(x.f.kcal*x.f.unitWeight/100)+' kcal / Stück ('+x.f.unitWeight+' g) · '+(x.f.p*x.f.unitWeight/100).toFixed(1)+' g Protein'):(Math.round(x.f.kcal)+' kcal / 100 g · '+x.f.p+' g Protein · '+x.f.c+' g Kohlenhydrate · '+x.f.fat+' g Fett'))+'</div></div></div>'}).join("");$$("[data-lib]").forEach(function(row){var idx=+row.dataset.lib,custom=idx>=foods.length;bindSwipe(row,{left:function(){chooseFood(idx)},right:custom?function(){state.customFoods.splice(idx-foods.length,1);save();renderLibrary();toast("Lebensmittel gelöscht")}:null,tap:function(){chooseFood(idx)}})})}
+function updatePieceHint(){var w=pendingFood&&Number(pendingFood.unitWeight);$("#amountUnit").textContent=w?"Stück":"g/ml";var n=Number($("#amount").value)||0;$("#pieceHint").textContent=w?("1 Stück ≈ "+w+" g essbarer Anteil · "+n+" Stück = "+(n*w).toFixed(0)+" g · "+Math.round((pendingFood.kcal||0)*n*w/100)+" kcal · "+((pendingFood.p||0)*n*w/100).toFixed(1)+" g Protein"):""}
+function chooseFood(i){pendingFood=db()[i];$("#amountTitle").textContent=pendingFood.name;$("#amount").value=Number(pendingFood.unitWeight)>0?1:(pendingFood.defaultAmount||100);$("#amount").step=Number(pendingFood.unitWeight)>0?1:"any";updatePieceHint();$("#amountModal").classList.add("open")}
 
 $("#scanFood").onclick=function(){$("#foodCamera").click()};
 $("#foodCamera").onchange=function(){if(this.files&&this.files[0]){resetCustomFoodForm();$("#customModal").classList.add("open");toast("Foto bereit · Nährwerte vom Etikett eintragen")}};
 
-$("#openFood").onclick=function(){$("#foodModal").classList.add("open");renderLibrary();renderFoodPresets()};$("#closeFood").onclick=function(){$("#foodModal").classList.remove("open")};$("#foodSearch").oninput=renderLibrary;
-$("#closeAmount").onclick=function(){$("#amountModal").classList.remove("open")};function amountStep(){return pendingFood&&pendingFood.defaultAmount&&pendingFood.defaultAmount<=5?1:10}
-$("#minusAmount").onclick=function(){$("#amount").value=Math.max(1,(+$("#amount").value||0)-amountStep())};$("#plusAmount").onclick=function(){$("#amount").value=(+$("#amount").value||0)+amountStep()};
-$("#confirmAmount").onclick=function(){var g=+$("#amount").value;if(!pendingFood||g<=0)return;var flog=(state.foodLog[viewDay]||(state.foodLog[viewDay]=[])),same=flog.find(function(x){return x.name===pendingFood.name});
+$("#openFood").onclick=function(){$("#foodSearch").value="";$("#foodModal").classList.add("open");renderLibrary();renderFoodPresets()};$("#closeFood").onclick=function(){$("#foodModal").classList.remove("open")};$("#foodSearch").oninput=renderLibrary;
+$("#closeAmount").onclick=function(){$("#amountModal").classList.remove("open")};function amountStep(){return pendingFood&&pendingFood.unitWeight?1:(pendingFood&&pendingFood.defaultAmount&&pendingFood.defaultAmount<=5?1:10)}
+$("#minusAmount").onclick=function(){$("#amount").value=Math.max(1,(+$("#amount").value||0)-amountStep());updatePieceHint()};$("#plusAmount").onclick=function(){$("#amount").value=(+$("#amount").value||0)+amountStep();updatePieceHint()};$("#amount").addEventListener("input",updatePieceHint);
+$("#confirmAmount").onclick=function(){var count=+$("#amount").value;var g=count*(pendingFood&&Number(pendingFood.unitWeight)>0?Number(pendingFood.unitWeight):1);if(!pendingFood||g<=0)return;var flog=(state.foodLog[viewDay]||(state.foodLog[viewDay]=[])),same=flog.find(function(x){return x.name===pendingFood.name});
 if(same)same.g=(Number(same.g)||0)+g;else flog.push({name:pendingFood.name,g:g});save();$("#amountModal").classList.remove("open");$("#foodModal").classList.remove("open");renderAll();toast(pendingFood.name+" hinzugefügt ✓")};
 
 /* custom food */
@@ -578,47 +583,77 @@ state.workout=Math.max(0,Math.min(workouts.length-1,Number(state.workout)||0));
 
 
 function muscleDiagram(name){
- var n=String(name||"").toLowerCase();
- var front=[],back=[];
- function has(x){return n.indexOf(x)>=0}
- if(has("chest")||has("pec"))front.push("chest");
- if(has("shoulder")||has("lateral"))front.push("shoulders");
- if(has("triceps")||has("curl"))front.push("arms");
- if(has("pulldown")||has("row"))back.push("back","arms");
- if(has("reverse pec"))back.push("rearShoulders","back");
- if(has("squat")||has("leg press")||has("leg extension")||has("adductor"))front.push("quads");
- if(has("squat")||has("leg press"))back.push("glutes");
- if(has("leg curl")||has("romanian")||has("hinge"))back.push("hamstrings","glutes");
- if(has("calf")){front.push("calves");back.push("calves")}
- if(has("crunch")||has("leg raise")||has("core"))front.push("abs");
-
- function cls(arr,key){return arr.indexOf(key)>=0?"primary":"body"}
- function body(view,arr){
-  var female=state.profile&&state.profile.sex==="female";
-  var shoulder=female?25:29, waist=female?16:19, hip=female?23:20;
-  var q='<svg class="muscleSvg" viewBox="0 0 120 230" role="img" aria-label="'+(view==="front"?"Vorderansicht":"Rückansicht")+'">';
-  q+='<ellipse class="body" cx="60" cy="18" rx="12" ry="15"/>';
-  q+='<path class="body" d="M'+(60-shoulder)+' 43 Q60 34 '+(60+shoulder)+' 43 L'+(60+waist)+' 108 Q60 119 '+(60-waist)+' 108Z"/>';
-  q+='<path class="body" d="M'+(60-hip)+' 106 Q60 119 '+(60+hip)+' 106 L76 210 L65 210 L60 137 L55 210 L44 210Z"/>';
-  q+='<path class="body" d="M'+(60-shoulder+2)+' 47 L20 119 L29 123 L'+(60-waist-1)+' 67 M'+(60+shoulder-2)+' 47 L100 119 L91 123 L'+(60+waist+1)+' 67"/>';
-  if(view==="front"){
-   q+='<path class="'+cls(arr,"chest")+'" d="M39 50 Q49 43 59 49 L58 70 Q47 74 38 65Z"/><path class="'+cls(arr,"chest")+'" d="M81 50 Q71 43 61 49 L62 70 Q73 74 82 65Z"/>';
-   q+='<ellipse class="'+cls(arr,"shoulders")+'" cx="33" cy="51" rx="8" ry="10"/><ellipse class="'+cls(arr,"shoulders")+'" cx="87" cy="51" rx="8" ry="10"/>';
-   q+='<path class="'+cls(arr,"arms")+'" d="M29 62 L21 110 L29 113 L38 67Z"/><path class="'+cls(arr,"arms")+'" d="M91 62 L99 110 L91 113 L82 67Z"/>';
-   q+='<path class="'+cls(arr,"abs")+'" d="M51 74 L69 74 L68 105 L52 105Z"/>';
-   q+='<path class="'+cls(arr,"quads")+'" d="M41 118 L56 119 L53 177 L43 177Z"/><path class="'+cls(arr,"quads")+'" d="M64 119 L79 118 L77 177 L67 177Z"/>';
-   q+='<path class="'+cls(arr,"calves")+'" d="M43 179 L53 179 L51 210 L44 210Z"/><path class="'+cls(arr,"calves")+'" d="M67 179 L77 179 L76 210 L69 210Z"/>';
+ var key=String(name||'').toLowerCase();
+ // Anatomical regions: primary movers first, secondary contributors second.
+ var map={
+ 'chest press':[['pec'],['antDelt','triceps']],
+ 'incline chest press':[['upperPec'],['antDelt','triceps','pec']],
+ 'pec deck':[['pec'],['antDelt']],
+ 'shoulder press':[['antDelt','sideDelt'],['triceps','traps']],
+ 'lateral raise':[['sideDelt'],['supraspinatus','traps']],
+ 'triceps pushdown':[['triceps'],[]],
+ 'lat pulldown':[['lats'],['biceps','brachialis','teres']],
+ 'chest-supported row':[['rhomboids','midTraps','lats'],['rearDelt','biceps']],
+ 'high row':[['lats','rhomboids','rearDelt'],['biceps','midTraps']],
+ 'reverse pec deck':[['rearDelt'],['rhomboids','midTraps']],
+ 'preacher curl':[['biceps','brachialis'],['forearm']],
+ 'hammer curl':[['brachialis','forearm'],['biceps']],
+ 'biceps curl':[['biceps'],['brachialis','forearm']],
+ 'triceps extension':[['triceps'],[]],
+ 'hack / pendulum squat':[['quads'],['glutes','adductors']],
+ 'leg press':[['quads'],['glutes','adductors']],
+ 'leg curl':[['hamstrings'],['calves']],
+ 'leg extension':[['quads'],[]],
+ 'adductor':[['adductors'],[]],
+ 'calf raise':[['calves'],[]],
+ 'romanian deadlift / hip hinge':[['hamstrings','glutes'],['erectors','adductors']],
+ 'cable crunch':[['abs'],['obliques']],
+ 'leg raise':[['hipFlexors'],['abs']],
+ 'core / mobility':[['abs','obliques'],['erectors']]
+ };
+ var muscles=map[key]||[[],[]];
+ function color(id){return muscles[0].indexOf(id)>=0?'hit':muscles[1].indexOf(id)>=0?'assist':'muscle'}
+ function path(id,d){return '<path class="'+color(id)+'" d="'+d+'"/>'}
+ function ellipse(id,cx,cy,rx,ry){return '<ellipse class="'+color(id)+'" cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'"/>'}
+ function figure(back){
+  var q='<svg class="anatomyFigure" viewBox="0 0 140 265" role="img" aria-label="'+(back?'Rückseite':'Vorderseite')+' – rot: primär, orange: sekundär">';
+  q+='<ellipse class="skin" cx="70" cy="20" rx="12" ry="16"/><path class="skin" d="M61 35 L79 35 L82 44 L58 44Z"/>';
+  q+='<path class="skin" d="M48 43 Q70 36 92 43 L99 78 L89 130 L51 130 L41 78Z"/>';
+  q+='<path class="skin" d="M49 120 L91 120 L95 143 L82 239 L72 239 L70 151 L68 239 L58 239 L45 143Z"/>';
+  q+='<path class="skin" d="M42 48 L30 55 L21 113 L31 117 L49 71Z M98 48 L110 55 L119 113 L109 117 L91 71Z"/>';
+  if(!back){
+   q+=path('traps','M58 41 L70 37 L82 41 L91 48 L82 51 L70 44 L58 51 L49 48Z');
+   q+=path('upperPec','M47 52 Q58 44 69 52 L68 64 L48 63Z M71 52 Q82 44 93 52 L92 63 L72 64Z');
+   q+=path('pec','M47 63 L68 65 L67 83 Q56 84 47 76Z M72 65 L93 63 L93 76 Q84 84 73 83Z');
+   q+=ellipse('antDelt',41,58,9,13)+ellipse('antDelt',99,58,9,13);
+   q+=path('sideDelt','M34 52 Q27 57 30 68 L39 78 L42 66Z M106 52 Q113 57 110 68 L101 78 L98 66Z');
+   q+=path('biceps','M34 76 L43 79 L39 98 L31 96Z M106 76 L97 79 L101 98 L109 96Z');
+   q+=path('brachialis','M31 96 L39 98 L37 108 L29 106Z M109 96 L101 98 L103 108 L111 106Z');
+   q+=path('forearm','M28 110 L37 112 L32 137 L23 135Z M112 110 L103 112 L108 137 L117 135Z');
+   q+=path('abs','M58 86 L82 86 L80 118 L60 118Z');
+   q+=path('obliques','M47 86 L57 88 L59 119 L52 123Z M93 86 L83 88 L81 119 L88 123Z');
+   q+=path('hipFlexors','M59 126 L70 139 L81 126 L80 146 L70 151 L60 146Z');
+   q+=path('adductors','M62 151 L69 151 L67 196 L60 187Z M71 151 L78 151 L80 187 L73 196Z');
+   q+=path('quads','M48 148 L60 148 L59 204 L52 209 L46 190Z M80 148 L92 148 L94 190 L88 209 L81 204Z');
+   q+=path('calves','M53 212 L65 212 L63 239 L57 239Z M75 212 L87 212 L83 239 L77 239Z');
   }else{
-   q+='<path class="'+cls(arr,"back")+'" d="M39 48 Q60 39 81 48 L75 96 Q60 105 45 96Z"/>';
-   q+='<ellipse class="'+cls(arr,"rearShoulders")+'" cx="33" cy="51" rx="8" ry="10"/><ellipse class="'+cls(arr,"rearShoulders")+'" cx="87" cy="51" rx="8" ry="10"/>';
-   q+='<path class="'+cls(arr,"arms")+'" d="M29 62 L21 110 L29 113 L38 67Z"/><path class="'+cls(arr,"arms")+'" d="M91 62 L99 110 L91 113 L82 67Z"/>';
-   q+='<ellipse class="'+cls(arr,"glutes")+'" cx="50" cy="119" rx="11" ry="12"/><ellipse class="'+cls(arr,"glutes")+'" cx="70" cy="119" rx="11" ry="12"/>';
-   q+='<path class="'+cls(arr,"hamstrings")+'" d="M41 132 L56 132 L53 177 L43 177Z"/><path class="'+cls(arr,"hamstrings")+'" d="M64 132 L79 132 L77 177 L67 177Z"/>';
-   q+='<path class="'+cls(arr,"calves")+'" d="M43 179 L53 179 L51 210 L44 210Z"/><path class="'+cls(arr,"calves")+'" d="M67 179 L77 179 L76 210 L69 210Z"/>';
+   q+=path('traps','M60 43 L70 39 L80 43 L88 55 L78 65 L70 56 L62 65 L52 55Z');
+   q+=path('rearDelt','M43 51 Q34 53 32 68 L44 77 L51 61Z M97 51 Q106 53 108 68 L96 77 L89 61Z');
+   q+=path('teres','M51 65 L65 70 L60 81 L48 77Z M89 65 L75 70 L80 81 L92 77Z');
+   q+=path('rhomboids','M61 60 L70 67 L79 60 L80 84 L70 91 L60 84Z');
+   q+=path('midTraps','M53 55 L61 60 L60 86 L52 82Z M87 55 L79 60 L80 86 L88 82Z');
+   q+=path('lats','M48 80 L61 87 L64 109 L55 126 L47 103Z M92 80 L79 87 L76 109 L85 126 L93 103Z');
+   q+=path('erectors','M65 91 L69 91 L69 128 L63 128Z M71 91 L75 91 L77 128 L71 128Z');
+   q+=path('triceps','M33 75 L43 78 L39 107 L29 104Z M107 75 L97 78 L101 107 L111 104Z');
+   q+=path('forearm','M28 110 L38 112 L32 137 L23 135Z M112 110 L102 112 L108 137 L117 135Z');
+   q+=path('glutes','M49 128 Q60 123 69 135 L68 151 Q56 158 47 146Z M91 128 Q80 123 71 135 L72 151 Q84 158 93 146Z');
+   q+=path('hamstrings','M49 155 L66 156 L63 205 L52 206Z M74 156 L91 155 L88 206 L77 205Z');
+   q+=path('adductors','M65 155 L69 155 L67 192 L63 199Z M71 155 L75 155 L77 199 L73 192Z');
+   q+=path('calves','M53 210 Q59 207 65 214 L63 237 L57 237Z M75 214 Q81 207 87 210 L83 237 L77 237Z');
   }
   return q+'</svg>';
  }
- return '<div class="anatomyWrap"><div>'+body("front",front)+'<div class="anatomyLabel">VORNE</div></div><div>'+body("back",back)+'<div class="anatomyLabel">HINTEN</div></div></div>';
+ return '<div class="anatomyWrap"><div>'+figure(false)+'<div class="anatomyLabel">VORNE</div></div><div>'+figure(true)+'<div class="anatomyLabel">HINTEN</div></div></div><div class="muscleLegend"><span style="color:#ff5c66">●</span> Hauptmuskeln &nbsp; <span style="color:#f3a64b">●</span> unterstützend · schematisch</div>';
 }
 
 
