@@ -641,11 +641,11 @@ function muscleDiagram(name){
  var secondary=muscles[1].map(function(x){return labels[x]||x}).join(', ')||'—';
  var regions={
  // Each region is a separate SVG path, not a highlight over a photograph.
- pec:['F','M -37 83 Q -35 67 -6 76 L -4 107 Q -24 116 -37 101 Z'],upperPec:['F','M -37 83 Q -35 67 -6 76 L -5 87 Q -24 83 -37 93 Z'],
- antDelt:['F','M -43 69 Q -57 74 -58 96 L -45 113 Q -36 94 -37 78 Z'],sideDelt:['F','M -44 71 Q -58 70 -61 98 L -51 116 L -45 109 Q -54 90 -44 71 Z'],
+ pec:['F','M -38 84 Q -34 73 -21 74 Q -12 74 -6 78 L -6 105 Q -20 115 -34 104 Q -40 99 -38 84 Z'],upperPec:['F','M -37 83 Q -35 67 -6 76 L -5 87 Q -24 83 -37 93 Z'],
+ antDelt:['F','M -45 70 Q -55 73 -59 87 Q -62 100 -52 113 Q -45 103 -43 90 Q -41 78 -45 70 Z'],sideDelt:['F','M -45 71 Q -58 73 -61 92 Q -63 103 -53 115 Q -47 105 -48 94 Q -50 83 -45 71 Z'],
  biceps:['F','M -53 117 Q -64 128 -63 151 L -53 164 Q -46 143 -49 121 Z'],brachialis:['F','M -51 140 L -63 147 L -61 162 L -53 166 Z'],forearm:['F','M -56 168 Q -67 181 -68 212 L -59 218 L -50 174 Z'],
  abs:['F','M -29 115 L -4 115 L -5 167 L -28 164 Z'],obliques:['F','M -37 113 L -29 117 L -29 164 L -39 156 Z'],hipFlexors:['F','M -35 169 L -6 174 L -9 190 L -28 198 Z'],
- quads:['F','M -38 192 Q -48 209 -43 253 L -30 280 L -9 260 L -8 200 Z'],adductors:['F','M -8 201 L -27 207 L -16 266 L -5 247 Z'],
+ quads:['F','M -36 194 Q -45 201 -45 224 Q -46 251 -31 277 Q -19 274 -12 255 L -10 204 Q -22 193 -36 194 Z'],adductors:['F','M -8 201 L -27 207 L -16 266 L -5 247 Z'],
  calves:['F','M -41 284 Q -47 307 -37 332 L -27 341 L -24 287 Z'],
  traps:['B','M -5 56 Q -32 64 -46 82 L -30 102 L -4 80 Z'],midTraps:['B','M -34 92 L -5 88 L -5 129 L -34 119 Z'],rhomboids:['B','M -29 99 L -6 92 L -6 127 L -27 119 Z'],
  rearDelt:['B','M -44 73 Q -60 77 -61 101 L -47 115 L -37 92 Z'],supraspinatus:['B','M -43 79 L -15 83 L -20 94 L -45 91 Z'],
@@ -653,16 +653,16 @@ function muscleDiagram(name){
  triceps:['B','M -52 119 Q -65 131 -61 163 L -51 168 L -47 133 Z'],
  erectors:['B','M -13 125 L -5 125 L -5 178 L -17 178 Z'],
  glutes:['B','M -37 180 Q -50 193 -43 215 Q -29 229 -6 213 L -7 183 Z'],
- hamstrings:['B','M -42 220 Q -47 244 -39 276 L -28 285 L -8 267 L -9 221 Z']
+ hamstrings:['B','M -39 222 Q -46 240 -40 264 Q -37 277 -29 283 Q -16 274 -11 263 L -12 222 Z']
  };
  function figure(back){
   var shift=back?300:100, out='<g transform="translate('+shift+',8)">';
   out+='<path d="M -18 51 Q -28 42 -27 26 Q -27 5 -6 5 Q 15 5 16 26 Q 16 43 6 51 L 6 61 Q 36 64 47 74 Q 60 82 65 114 L 76 211 L 61 217 L 47 150 L 43 184 L 48 259 L 42 288 L 37 342 L 23 342 L 17 285 L 7 236 L 3 236 L -5 285 L -10 342 L -24 342 L -30 286 L -39 259 L -42 184 L -47 150 L -61 217 L -76 211 L -65 114 Q -60 82 -47 74 Q -36 64 -18 61 Z" fill="#343b45" stroke="#7b8795" stroke-width="2"/>';
-  Object.keys(regions).forEach(function(id){var r=regions[id];if(r[0]!== (back?'B':'F'))return;var cls=color(id);out+='<path data-muscle="'+id+'" class="anatomyRegion '+cls+'" d="'+r[1]+'"/>';out+='<path data-muscle="'+id+'" class="anatomyRegion '+cls+'" transform="scale(-1,1)" d="'+r[1]+'"/>';});
+  Object.keys(regions).forEach(function(id){var r=regions[id];if(r[0]!== (back?'B':'F'))return;var cls=color(id);out+='<path data-muscle="'+id+'" class="anatomyRegion '+cls+'" d="'+r[1]+'"/>';out+='<path data-muscle="'+id+'" class="anatomyRegion '+cls+'" transform="translate(-8,0) scale(-1,1)" d="'+r[1]+'"/>';});
   out+='<path d="M -4 63 L -4 181" stroke="#89939e" stroke-width="1" opacity=".4" fill="none"/>';
   return out+'</g>';
  }
- var svg='<svg class="anatomySvg" viewBox="0 0 400 365" role="img" aria-label="Muskelgruppen für '+name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'"><defs><linearGradient id="bodyShade" x1="0" x2="1"><stop stop-color="#49525d"/><stop offset=".5" stop-color="#313943"/><stop offset="1" stop-color="#49525d"/></linearGradient></defs>'+figure(false)+figure(true)+'<text x="100" y="361" text-anchor="middle">VORNE</text><text x="300" y="361" text-anchor="middle">HINTEN</text></svg>';
+ var svg='<svg class="anatomySvg" viewBox="0 0 400 365" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Muskelgruppen für '+name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'"><defs><linearGradient id="bodyShade" x1="0" x2="1"><stop stop-color="#49525d"/><stop offset=".5" stop-color="#313943"/><stop offset="1" stop-color="#49525d"/></linearGradient></defs>'+figure(false)+figure(true)+'<text x="100" y="361" text-anchor="middle">VORNE</text><text x="300" y="361" text-anchor="middle">HINTEN</text></svg>';
  return '<div class="anatomyPhoto">'+svg+'</div><div class="anatomyDetails"><div><b style="color:#ff646a">● Haupt:</b> '+primary+'</div><div><b style="color:#f5b85c">● Hilft:</b> '+secondary+'</div></div>';
 
 }
