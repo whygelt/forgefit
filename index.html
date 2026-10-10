@@ -165,6 +165,9 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 .atlasGrid{display:grid;grid-template-columns:1fr 1fr;gap:4px;align-items:start;background:#080b0f;border-radius:14px;padding:5px 3px 1px;overflow:hidden}
 .atlasFigure{display:block;width:100%;height:auto;max-height:390px;filter:contrast(1.07);overflow:visible}
 .atlasCaption{text-align:center;letter-spacing:2px;color:#8c96a1;font-size:10px;padding:2px 0 5px}
+
+/* FORGEFIT interactive muscle atlas */
+.forgeAtlasCard{overflow:hidden}.atlasPill{border:1px solid #343d41;border-radius:30px;padding:7px 10px;font-size:11px;letter-spacing:1.4px;color:#d7ff4c}.atlasStage{position:relative;margin:12px 0 8px;border-radius:18px;background:radial-gradient(ellipse at 50% 40%,#1b2427,#090d10 72%);min-height:370px;display:flex;justify-content:center;align-items:center;overflow:hidden;touch-action:pan-y}.atlasModel{width:min(70%,280px);height:385px;position:relative;transition:opacity .18s}.atlasBody{width:100%;height:100%;object-fit:fill;display:block;filter:contrast(1.07) saturate(.65)}.atlasHotspot{position:absolute;border:0;border-radius:50%;background:rgba(215,255,76,.13);box-shadow:inset 0 0 0 1px rgba(215,255,76,.26);padding:0;min-width:17px;min-height:17px;transform:translate(-50%,-50%);cursor:pointer;z-index:2}.atlasHotspot.done{background:rgba(255,89,106,.4);box-shadow:0 0 13px rgba(255,89,106,.25)}.atlasHotspot.rest{background:rgba(246,185,93,.22)}.atlasHotspot.selected{outline:2px solid #fff;outline-offset:2px}.atlasTurn{position:absolute;top:44%;z-index:3;border-radius:50%;width:42px;height:42px;font-size:28px;background:#1d2529;color:#d7ff4c;border:1px solid #394347}.atlasLeft{left:8px}.atlasRight{right:8px}.atlasMuscleDetails{border:1px solid #30363a;border-radius:14px;padding:13px;margin:8px 0}.atlasMuscleDetails b{font-size:16px}.atlasLegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:#a7aeb6;margin:12px 0}.atlasRecommendation{border-top:1px solid #262d30;padding-top:12px}.atlasRec{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #202629}.atlasRec button{font-size:12px;border:1px solid #536044;border-radius:12px;padding:8px;color:#d7ff4c;background:#222a1e}.atlasScore{font-size:11px;color:#9da9ae}
 </style><style>.stepTiers{display:grid;gap:9px;margin-top:14px}.tierRow{display:grid;grid-template-columns:87px minmax(0,1fr) 55px;align-items:center;gap:8px}.tierLabel{font-size:11px;font-weight:850;letter-spacing:.4px}.tierGoal{font-size:11px;color:#828b98;text-align:right}.tierTrack{height:13px;border-radius:20px;background:#1b2028;overflow:hidden}.tierFill{height:100%;border-radius:20px;background:linear-gradient(165deg,#ffffff70,transparent 48%,#00000050),var(--tier);box-shadow:inset 0 1px 3px #fff7;transition:width .6s ease}.muscleFocus{position:relative}.muscleFocus img{display:block;width:100%}.muscleSpot{position:absolute;transform:translate(-50%,-50%);border-radius:48%;width:8%;height:5%;filter:drop-shadow(0 0 6px currentColor);opacity:.9;pointer-events:none}.muscleSpot.primary{background:#ff4b5f99;border:2px solid #ff6b7a;color:#ff4b5f}.muscleSpot.secondary{background:#ffbf5180;border:1px solid #ffc85e;color:#ffb344} .anatomySvg{display:block;width:100%;height:auto;background:#090d12}.anatomySvg text{fill:#8c96a4;font-size:10px;letter-spacing:1.5px}.anatomyRegion{stroke:#87929e;stroke-width:1;stroke-linejoin:round;fill:#48515c}.anatomyRegion.hit{fill:#d94a56;stroke:#ff9ba6}.anatomyRegion.assist{fill:#d58c39;stroke:#ffda91} </style></head>
 <body><main><div class="globalDateNav" id="globalDateNav">
 <button id="globalPrev" aria-label="Vorheriger Tag">‹</button>
@@ -187,6 +190,7 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 
 <section id="gym" class="page">
 <div class="card"><div class="small muted">WORKOUT · WÄHLE DEINEN TAG</div><div class="big" id="workoutName"></div><div class="small muted" style="margin-top:8px">Trainingstag unten antippen · übersprungene Tage bleiben unverändert</div></div>
+<div class="card forgeAtlasCard"><div class="row between"><div><div class="small muted">FORGEFIT · MUSCLE ATLAS</div><h2 style="margin:5px 0">Dein Körper. Dein Plan.</h2></div><span class="atlasPill" id="atlasSideLabel">VORNE</span></div><div class="small muted">Figur wischen oder drehen · Muskel antippen · Trainingsfortschritt abhaken</div><div class="atlasStage" id="atlasStage"><button type="button" class="atlasTurn atlasLeft" id="atlasTurnLeft" aria-label="Modell drehen">‹</button><div class="atlasModel" id="atlasModel"></div><button type="button" class="atlasTurn atlasRight" id="atlasTurnRight" aria-label="Modell drehen">›</button></div><div id="atlasMuscleDetails" class="atlasMuscleDetails"><b>Muskel auswählen</b><div class="small muted">Tippe auf einen Muskelbereich der Figur.</div></div><div class="atlasLegend"><span>● <b style="color:#ff596a">Heute trainiert</b></span><span>● <b style="color:#d7ff4c">Heute geplant</b></span><span>● <b style="color:#f6b95d">Erholung empfohlen</b></span></div><div class="atlasRecommendation" id="atlasRecommendation"></div></div>
 <div class="card"><div class="row between"><h2>Krafttraining</h2><button id="addCardio">+ Cardio</button></div><div class="gymWeek" id="gymWeek"></div><div id="exercises"></div></div>
 <div class="card" id="cardioCard"><h2>Cardio heute</h2><div id="cardioLog" class="muted small">Noch kein Cardio.</div></div>
 </section>
@@ -690,6 +694,33 @@ function workoutComparison(d,wi){
  return '<div class="prevWorkout"><div class="pwTitle">LETZTER '+workouts[wi][0]+' · '+prev+'</div>'+rows+'</div>';
 }
 
+var atlasBack=false,atlasSelected='pec';
+var atlasMuscles={
+ pec:{name:'Brust · Pectoralis major',fn:'Führt den Oberarm nach vorn und zur Körpermitte.',front:[[50,22,33,9]],back:[],ex:['Chest Press','Incline Chest Press','Pec Deck']},
+ shoulders:{name:'Schulter · Deltoideus',fn:'Hebt und bewegt den Oberarm in mehrere Richtungen.',front:[[22,21,15,9],[78,21,15,9]],back:[[22,21,15,9],[78,21,15,9]],ex:['Shoulder Press','Lateral Raise','Reverse Pec Deck']},
+ biceps:{name:'Bizeps',fn:'Beugt den Ellenbogen und dreht den Unterarm.',front:[[15,33,11,12],[85,33,11,12]],back:[],ex:['Preacher Curl','Biceps Curl','Hammer Curl']},
+ triceps:{name:'Trizeps',fn:'Streckt den Ellenbogen.',front:[],back:[[15,33,12,13],[85,33,12,13]],ex:['Triceps Pushdown','Triceps Extension']},
+ lats:{name:'Latissimus',fn:'Zieht den Oberarm zum Körper und nach hinten.',front:[],back:[[36,34,17,19],[64,34,17,19]],ex:['Lat Pulldown','Chest-Supported Row','High Row']},
+ upperback:{name:'Oberer Rücken · Trapez/Rhomboiden',fn:'Bewegt und stabilisiert die Schulterblätter.',front:[],back:[[50,23,31,14]],ex:['Chest-Supported Row','High Row','Reverse Pec Deck']},
+ abs:{name:'Bauchmuskeln',fn:'Beugen und stabilisieren den Rumpf.',front:[[50,38,22,19]],back:[],ex:['Cable Crunch','Leg Raise','Core / Mobility']},
+ glutes:{name:'Gesäß · Gluteus maximus',fn:'Streckt und stabilisiert die Hüfte.',front:[],back:[[50,52,29,12]],ex:['Leg Press','Romanian Deadlift / Hip Hinge','Hack / Pendulum Squat']},
+ quads:{name:'Quadrizeps',fn:'Streckt das Knie.',front:[[35,64,22,20],[65,64,22,20]],back:[],ex:['Leg Extension','Leg Press','Hack / Pendulum Squat']},
+ hamstrings:{name:'Beinbeuger',fn:'Beugen das Knie und strecken die Hüfte.',front:[],back:[[35,65,20,19],[65,65,20,19]],ex:['Leg Curl','Romanian Deadlift / Hip Hinge']},
+ calves:{name:'Waden',fn:'Strecken den Fuß im Sprunggelenk.',front:[[34,86,16,14],[66,86,16,14]],back:[[34,86,16,14],[66,86,16,14]],ex:['Calf Raise']}
+};
+var atlasExerciseMuscles={
+ 'Chest Press':['pec','shoulders','triceps'],'Incline Chest Press':['pec','shoulders','triceps'],'Pec Deck':['pec','shoulders'],'Shoulder Press':['shoulders','triceps'],'Lateral Raise':['shoulders'],'Triceps Pushdown':['triceps'],'Triceps Extension':['triceps'],
+ 'Lat Pulldown':['lats','biceps'],'Chest-Supported Row':['upperback','lats','biceps'],'High Row':['upperback','lats','biceps'],'Reverse Pec Deck':['upperback','shoulders'],'Preacher Curl':['biceps'],'Hammer Curl':['biceps'],'Biceps Curl':['biceps'],
+ 'Hack / Pendulum Squat':['quads','glutes'],'Leg Press':['quads','glutes'],'Leg Curl':['hamstrings'],'Leg Extension':['quads'],'Adductor':['quads'],'Calf Raise':['calves'],'Romanian Deadlift / Hip Hinge':['hamstrings','glutes'],'Cable Crunch':['abs'],'Leg Raise':['abs'],'Core / Mobility':['abs']
+};
+function atlasVolume(date){var out={};state.logs.forEach(function(l){if(l.date!==date)return;var ms=atlasExerciseMuscles[l.exercise]||[];ms.forEach(function(m,i){out[m]=(out[m]||0)+(i===0?1:.35)})});return out}
+function atlasRecent(date){var out={};var d0=dateFromIso(date);state.logs.forEach(function(l){var age=Math.round((d0-dateFromIso(l.date))/86400000);if(age<0||age>5)return;(atlasExerciseMuscles[l.exercise]||[]).forEach(function(m,i){out[m]=(out[m]||0)+(i===0?1:.35)*Math.pow(.65,age)})});return out}
+function atlasPlanned(date){var wi=workoutIndexForDate(date),out={};(workouts[wi]&&workouts[wi][1]||[]).forEach(function(e){(atlasExerciseMuscles[e[0]]||[]).forEach(function(m){out[m]=true})});return out}
+function atlasSuggestions(date,selected){var recent=atlasRecent(date),today=atlasVolume(date),plan=atlasPlanned(date),pool=[];Object.keys(atlasExerciseMuscles).forEach(function(ex){var ms=atlasExerciseMuscles[ex],main=ms[0];if(selected&&ms.indexOf(selected)<0)return;var sameToday=state.logs.some(function(l){return l.date===date&&l.exercise===ex});if(sameToday)return;var overlap=ms.reduce(function(a,m,i){return a+(recent[m]||0)*(i===0?1:.6)},0);var score=overlap+(plan[main]?-.2:0);pool.push({name:ex,score:score,muscles:ms})});pool.sort(function(a,b){return a.score-b.score});var picked=[],used={};pool.forEach(function(x){if(picked.length>=3)return;var collision=x.muscles.some(function(m){return used[m]});if(collision&&picked.length>0)return;picked.push(x);x.muscles.forEach(function(m){used[m]=true})});return picked}
+function renderAtlas(){var host=document.getElementById('atlasModel');if(!host)return;var d=selectedDate(),today=atlasVolume(d),recent=atlasRecent(d),plan=atlasPlanned(d);document.getElementById('atlasSideLabel').textContent=atlasBack?'HINTEN':'VORNE';var src=state.profile&&state.profile.sex==='female'?ANATOMY_FEMALE:ANATOMY_MALE;var view=atlasBack?'back':'front';var html='<img class="atlasBody" alt="Anatomisches Muskelmodell '+(atlasBack?'Rückseite':'Vorderseite')+'" src="'+src+'" style="object-fit:cover;object-position:'+(atlasBack?'right':'left')+';width:200%;max-width:none;transform:translateX('+(atlasBack?'-50%':'0')+')">';Object.keys(atlasMuscles).forEach(function(id){var m=atlasMuscles[id],status=today[id]?'done':recent[id]>2?'rest':plan[id]?'planned':'';(m[view]||[]).forEach(function(b){html+='<button type="button" class="atlasHotspot '+status+(atlasSelected===id?' selected':'')+'" data-atlas="'+id+'" aria-label="'+m.name+'" style="left:'+b[0]+'%;top:'+b[1]+'%;width:'+b[2]+'%;height:'+b[3]+'%"></button>'})});host.innerHTML=html;host.querySelectorAll('[data-atlas]').forEach(function(b){b.onclick=function(){atlasSelected=this.dataset.atlas;renderAtlas()}});var selected=atlasMuscles[atlasSelected];var ex=selected.ex.map(function(x){return '<span class="chip">'+x+'</span>'}).join(' ');document.getElementById('atlasMuscleDetails').innerHTML='<b>'+selected.name+'</b><div class="small muted" style="margin:7px 0">'+selected.fn+'</div><div class="small muted">Übungen:</div><div class="chips" style="margin-top:7px">'+ex+'</div><div class="atlasScore" style="margin-top:9px">Heute '+(today[atlasSelected]||0).toFixed(1)+' Belastungspunkte · letzte Tage '+(recent[atlasSelected]||0).toFixed(1)+'</div>';var picks=atlasSuggestions(d,atlasSelected);document.getElementById('atlasRecommendation').innerHTML='<b>Übungen mit wenig Überschneidung</b><div class="small muted" style="margin:5px 0 9px">Vorschläge aus deinen erfassten Sätzen der letzten 5 Tage. Kein automatischer Ersatz für Regeneration.</div>'+(picks.length?picks.map(function(x){return '<div class="atlasRec"><div><b>'+x.name+'</b><div class="atlasScore">Belastungs-Überlappung '+x.score.toFixed(1)+'</div></div><button type="button" data-addatlas="'+x.name+'">+ Heute</button></div>'}).join(''):'<div class="small muted">Keine passende zusätzliche Übung.</div>');document.querySelectorAll('[data-addatlas]').forEach(function(b){b.onclick=function(){var key='forgefit_atlas_extra_'+d;var a=JSON.parse(localStorage.getItem(key)||'[]');if(a.indexOf(this.dataset.addatlas)<0)a.push(this.dataset.addatlas);localStorage.setItem(key,JSON.stringify(a));renderGym();toast('Übung zum Tag hinzugefügt')}})}
+function atlasTurn(){atlasBack=!atlasBack;renderAtlas()}
+document.getElementById('atlasTurnLeft').onclick=atlasTurn;document.getElementById('atlasTurnRight').onclick=atlasTurn;
+(function(){var el=document.getElementById('atlasStage'),x=null;el.addEventListener('touchstart',function(e){x=e.touches[0].clientX},{passive:true});el.addEventListener('touchend',function(e){if(x!==null&&Math.abs(e.changedTouches[0].clientX-x)>45)atlasTurn();x=null},{passive:true})})();
 function renderGym(){
  var gd=selectedDate(),wi=workoutIndexForDate(gd);
  if(wi<0||wi>=workouts.length)wi=0;
@@ -708,7 +739,8 @@ function renderGym(){
   });
  }
 
- var exercises=Array.isArray(w[1])?w[1]:[];
+ var exercises=Array.isArray(w[1])?w[1].slice():[];
+ try{var extra=JSON.parse(localStorage.getItem('forgefit_atlas_extra_'+gd)||'[]');extra.forEach(function(n){if(!exercises.some(function(x){return x[0]===n}))exercises.push([n,3])})}catch(e){}
  var previousHTML="";try{previousHTML=workoutComparison(gd,wi)}catch(e){console.error("Workout comparison",e)}
  list.innerHTML=previousHTML+exercises.map(function(e){
   var rows="";
@@ -717,7 +749,7 @@ function renderGym(){
   }
   return '<div class="exercise" data-ex="'+e[0]+'">'+
    '<button type="button" class="exerciseHead"><h3>'+e[0]+'</h3><span class="exerciseChevron">⌄</span></button>'+
-   '<div class="muscleInfo">'+muscleDiagram(e[0])+'</div>'+rows+'</div>';
+   '<div class="muscleInfo"><div class="small muted" style="padding:10px 0">Muskelgruppen oben im interaktiven Atlas antippen.</div></div>'+rows+'</div>';
  }).join("");
 
  if(!exercises.length)list.innerHTML='<div class="muted small">Heute: Recovery / Cardio / Mobility.</div>';
@@ -759,7 +791,7 @@ function renderGym(){
    inputs[1].onchange=saveSet;
   });
  });
- renderCardio();
+ renderCardio();renderAtlas();
 }
 
 var cardioTypes=["Walking","Jogging","Cycling","Rope Jumping","Stairmaster","Crosstrainer","Rowing","Swimming","Custom"],selectedCardio="Walking";$("#cardioChoices").innerHTML=cardioTypes.map(function(x){return '<button data-cardio="'+x+'">'+x+'</button>'}).join("");$$("[data-cardio]").forEach(function(b){b.onclick=function(){selectedCardio=this.dataset.cardio;$$("[data-cardio]").forEach(function(x){x.classList.remove("primary")});this.classList.add("primary")}});$("#addCardio").onclick=function(){$("#cardioModal").classList.add("open")};$("#closeCardio").onclick=function(){$("#cardioModal").classList.remove("open")};$("#saveCardio").onclick=function(){(state.cardio[selectedDate()]||(state.cardio[selectedDate()]=[])).push({type:selectedCardio,minutes:+$("#cardioMinutes").value||0,rpe:Math.min(10,Math.max(1,+$("#cardioRpe").value||5))});save();$("#cardioModal").classList.remove("open");renderAll();toast("Cardio gespeichert")};
