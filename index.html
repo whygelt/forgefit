@@ -693,7 +693,18 @@ function bindPlanReorder(){
 $("#shift").onchange=function(){state.shift=this.value;save();renderSchedule()};
 var taskKind="daily";
 function setTaskKind(k){taskKind=k;$("#pickDaily").classList.toggle("active",k==="daily");$("#pickTodo").classList.toggle("active",k==="todo");$("#taskTypeHelp").textContent=k==="daily"?"Erscheint jeden Tag in diesem Zeitprofil.":"Bleibt über Tage und Wochen offen, bis du es abhäkst.";$("#taskTimeField").style.display=k==="daily"?"block":"none"}
-$("#addTask").onclick=function(){taskKind="daily";$("#taskTitle").value="";$("#taskTime").value="12:00";$("#taskDuration").value="30";setTaskKind("daily");$("#taskTypeModal").classList.add("open")};
+function nextScheduleStartTime(){
+ // Use the selected day's computed schedule, including any delay from completion stamps.
+ var latest=0;
+ planItems().forEach(function(item){
+  if(item.type!=="daily")return;
+  var start=planMinutes(item.displayTime||item.obj.time||"00:00");
+  if(!Number.isFinite(start))return;
+  latest=Math.max(latest,start+planDuration(item.obj));
+ });
+ return planClock(Math.min(1439,latest));
+}
+$("#addTask").onclick=function(){taskKind="daily";$("#taskTitle").value="";$("#taskTime").value=nextScheduleStartTime();$("#taskDuration").value="30";setTaskKind("daily");$("#taskTypeModal").classList.add("open")};
 $("#closeTaskType").onclick=function(){$("#taskTypeModal").classList.remove("open")};$("#pickDaily").onclick=function(){setTaskKind("daily")};$("#pickTodo").onclick=function(){setTaskKind("todo")};
 $("#saveTaskType").onclick=function(){var name=$("#taskTitle").value.trim();if(!name)return toast("Aufgabe fehlt");if(taskKind==="daily")schedData().push({uid:"daily_"+Date.now(),time:$("#taskTime").value||"12:00",name:name,done:false,type:"daily",duration:Math.max(5,Math.min(600,Number($("#taskDuration").value)||30))});else state.todos.push({id:Date.now(),name:name,created:Date.now(),done:false});save();$("#taskTypeModal").classList.remove("open");renderSchedule();toast(taskKind==="daily"?"Täglich hinzugefügt":"To-do hinzugefügt")};
 $("#newScheduleProfile").onclick=function(){$("#newScheduleName").value="";$("#scheduleProfileModal").classList.add("open")};
