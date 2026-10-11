@@ -168,6 +168,27 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 
 /* FORGEFIT interactive muscle atlas */
 .forgeAtlasCard{overflow:hidden}.atlasPill{border:1px solid #343d41;border-radius:30px;padding:7px 10px;font-size:11px;letter-spacing:1.4px;color:#d7ff4c}.atlasStage{position:relative;margin:12px 0 8px;border-radius:18px;background:radial-gradient(ellipse at 50% 40%,#1b2427,#090d10 72%);min-height:370px;display:flex;justify-content:center;align-items:center;overflow:hidden;touch-action:pan-y}.atlasModel{width:min(70%,280px);height:385px;position:relative;transition:opacity .18s}.atlasBody{width:100%;height:100%;object-fit:fill;display:block;filter:contrast(1.07) saturate(.65)}.atlasHotspot{position:absolute;border:0;border-radius:50%;background:rgba(215,255,76,.13);box-shadow:inset 0 0 0 1px rgba(215,255,76,.26);padding:0;min-width:17px;min-height:17px;transform:translate(-50%,-50%);cursor:pointer;z-index:2}.atlasHotspot.done{background:rgba(255,89,106,.4);box-shadow:0 0 13px rgba(255,89,106,.25)}.atlasHotspot.rest{background:rgba(246,185,93,.22)}.atlasHotspot.selected{outline:2px solid #fff;outline-offset:2px}.atlasTurn{position:absolute;top:44%;z-index:3;border-radius:50%;width:42px;height:42px;font-size:28px;background:#1d2529;color:#d7ff4c;border:1px solid #394347}.atlasLeft{left:8px}.atlasRight{right:8px}.atlasMuscleDetails{border:1px solid #30363a;border-radius:14px;padding:13px;margin:8px 0}.atlasMuscleDetails b{font-size:16px}.atlasLegend{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:#a7aeb6;margin:12px 0}.atlasRecommendation{border-top:1px solid #262d30;padding-top:12px}.atlasRec{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #202629}.atlasRec button{font-size:12px;border:1px solid #536044;border-radius:12px;padding:8px;color:#d7ff4c;background:#222a1e}.atlasScore{font-size:11px;color:#9da9ae}
+
+/* FORGEFIT unified schedule */
+#health>.sectionLabel:first-child{display:none}
+#health .schedule{margin:12px 0 8px}
+#health .planItem{display:flex;align-items:center;gap:7px;min-height:58px;border-bottom:1px solid var(--line);background:var(--bg,#080a0d);padding:5px 0;touch-action:pan-y}
+#health .planItem.dragging{background:#1d2614;outline:1px solid var(--accent,#d5ff4b);border-radius:12px;box-shadow:0 6px 20px #0009;position:relative;z-index:3}
+#health .planGrip{flex:0 0 25px;border:0;background:transparent;color:#879084;padding:8px 0;font-size:22px;touch-action:pan-y;cursor:grab}
+#health .planItem.dragging .planGrip{touch-action:none;color:var(--accent,#d5ff4b)}
+#health .planCheck{flex:0 0 29px;height:29px;border:2px solid #7c858d;border-radius:50%;background:transparent;color:#111;padding:0;font-size:18px;font-weight:900}
+#health .planCheck.done{background:var(--accent,#d5ff4b);border-color:var(--accent,#d5ff4b)}
+#health .planTime{width:88px;min-width:88px;max-width:88px;padding:5px 1px;border:0;background:transparent;color:#f3f4f4;font-size:14px;font-weight:700;-webkit-text-fill-color:#f3f4f4;opacity:1}
+#health .planTime:disabled{color:#c4cad0;opacity:.85;-webkit-text-fill-color:#c4cad0}
+#health .planName{flex:1;min-width:0;width:10px;padding:8px 1px;background:transparent;border:0;color:#f3f4f4;font-size:14px}
+#health .planStampWrap{display:flex;align-items:center;gap:3px;flex:0 0 auto;color:var(--accent,#d5ff4b);font-size:11px;font-weight:700}
+#health .planStamp{width:67px;min-width:0;padding:5px 2px;border:1px solid #526b2a;border-radius:8px;background:#17210d;color:var(--accent,#d5ff4b);font-size:12px;font-weight:700}
+#health .planLock{flex:0 0 35px;padding:7px 3px;border:1px solid #353e31;border-radius:10px;background:#111712;color:#a4b1a4;font-size:16px}
+#health .planLock.locked{color:var(--accent,#d5ff4b);border-color:#6c8737;background:#1a2413}
+#health .planTodoDot{font-size:18px;color:var(--accent,#d5ff4b);width:9px}
+#health .planTodoTag{color:#a3b28b;font-size:10px;white-space:nowrap}
+#health .planDelete{flex:0 0 24px;padding:4px 0;background:transparent;border:0;color:#879087;font-size:19px}
+#health .addline{margin-top:14px}
 </style><style>.stepTiers{display:grid;gap:9px;margin-top:14px}.tierRow{display:grid;grid-template-columns:87px minmax(0,1fr) 55px;align-items:center;gap:8px}.tierLabel{font-size:11px;font-weight:850;letter-spacing:.4px}.tierGoal{font-size:11px;color:#828b98;text-align:right}.tierTrack{height:13px;border-radius:20px;background:#1b2028;overflow:hidden}.tierFill{height:100%;border-radius:20px;background:linear-gradient(165deg,#ffffff70,transparent 48%,#00000050),var(--tier);box-shadow:inset 0 1px 3px #fff7;transition:width .6s ease}.muscleFocus{position:relative}.muscleFocus img{display:block;width:100%}.muscleSpot{position:absolute;transform:translate(-50%,-50%);border-radius:48%;width:8%;height:5%;filter:drop-shadow(0 0 6px currentColor);opacity:.9;pointer-events:none}.muscleSpot.primary{background:#ff4b5f99;border:2px solid #ff6b7a;color:#ff4b5f}.muscleSpot.secondary{background:#ffbf5180;border:1px solid #ffc85e;color:#ffb344} .anatomySvg{display:block;width:100%;height:auto;background:#090d12}.anatomySvg text{fill:#8c96a4;font-size:10px;letter-spacing:1.5px}.anatomyRegion{stroke:#87929e;stroke-width:1;stroke-linejoin:round;fill:#48515c}.anatomyRegion.hit{fill:#d94a56;stroke:#ff9ba6}.anatomyRegion.assist{fill:#d58c39;stroke:#ffda91} </style><style id="atlas-recovery-styles">.atlasRecovery{margin-top:13px;padding:12px;border:1px solid #38423b;border-radius:13px;background:#111917}.atlasRecovery .row{gap:8px;font-size:12px}.atlasRecovery .row span{color:#f6b95d;text-align:right}.atlasRecoveryTrack{height:9px;background:#343a3c;border-radius:20px;overflow:hidden;margin:11px 0 7px}.atlasRecoveryTrack>div{height:100%;background:linear-gradient(90deg,#f6b95d,#d7ff4c);border-radius:20px;transition:width .3s}.atlasRecovery details{margin-top:12px;font-size:12px}.atlasRecovery summary{color:#d7ff4c;cursor:pointer;padding:5px 0}.atlasHistory{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #303733;padding:7px 0;font-size:11px;color:#c2c9ca}.atlasHistory span:last-child{color:#f6b95d}</style><style id="forgefit-gym-cleanup">#gym .forgeAtlasCard,#gym .atlasStage,#gym #atlasModel,#gym #atlasMuscleDetails,#gym #atlasRecommendation{display:none!important}</style><style id="guided-workout-css">
 .guidedHero{background:radial-gradient(ellipse at 95% 0%,#30401a 0%,transparent 52%),linear-gradient(135deg,#141a15,#090b0c 65%);border:1px solid #333d2a;border-radius:22px;padding:21px 17px;margin:8px 0 20px}.guidedEyebrow{font-size:10px;font-weight:900;letter-spacing:.18em;color:#d5ff35}.guidedTitle{font-size:27px;font-weight:900;line-height:1.08;letter-spacing:-.05em;margin:13px 0 8px}.guidedSub{font-size:12px;color:#b0b9b0;line-height:1.5}.guidedProgress{height:6px;border-radius:99px;background:#283025;margin:18px 0;overflow:hidden}.guidedProgress i{display:block;height:100%;background:#d5ff35;width:0;transition:width .3s}.guidedHeroRow{display:flex;align-items:center;justify-content:space-between;gap:10px}.guidedHeroRow .primary{padding:14px 17px;font-size:12px;font-weight:900;letter-spacing:.03em}.guidedSession{border:1px solid #35452d;background:#0c100d;border-radius:20px;padding:16px;margin-bottom:20px}.guidedSession[hidden]{display:none}.guidedTop{display:flex;justify-content:space-between;align-items:center;gap:8px}.guidedKicker{font-size:11px;letter-spacing:.12em;color:#d5ff35;font-weight:800}.guidedSession h2{font-size:27px;margin:14px 0 6px;line-height:1.15}.guidedFocus{font-size:12px;color:#c3cebb;margin-bottom:14px}.guidedInstruction{padding:14px;border-radius:13px;background:#141b16;border:1px solid #27372a;margin:12px 0}.guidedInstruction b{color:#d5ff35}.guidedInstruction ol{padding-left:20px;margin:9px 0 0}.guidedInstruction li{margin:7px 0;line-height:1.45;font-size:13px}.guidedSet{display:grid;grid-template-columns:35px 1fr 1fr 49px;gap:8px;align-items:center;margin:9px 0}.guidedSet input{width:100%;min-width:0;padding:11px 6px;text-align:center;background:#181e1a;border:1px solid #374036;color:#fff}.guidedSet button{padding:12px 0;font-weight:900}.guidedSet button.done{background:#d5ff35;color:#101510}.guidedRest{font-size:12px;color:#a5b2a3;margin:12px 0}.guidedActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.guidedActions button{min-height:45px}.guidedAlternatives{margin:12px 0;font-size:12px}.guidedAlternatives summary{padding:8px 0;color:#d5ff35}.guidedAlternatives button{display:block;width:100%;text-align:left;margin:7px 0;padding:12px}.guidedRating{display:flex;gap:6px;margin:12px 0}.guidedRating button{flex:1;font-size:11px;padding:12px 4px}.guidedRating button.selected{border-color:#d5ff35;color:#d5ff35}.guidedDone{text-align:center;padding:20px 6px}.guidedDone .check{font-size:44px;color:#d5ff35}.guidedClose{font-size:12px}.guidedNote{font-size:11px;color:#9da89f;line-height:1.45;margin-top:10px}
 .forgeAtlasCard{display:none!important}.gymQuick{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.gymQuick button{flex:1;min-width:120px;min-height:44px}.gymSimpleEx .gymExBody{display:none;padding:0 12px 16px}.gymSimpleEx.open .gymExBody{display:block}.gymEditRow{display:grid;grid-template-columns:minmax(0,1fr) 65px 40px;gap:8px;margin:9px 0}.gymEditRow input{min-width:0;width:100%}.gymHistoryRow{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252b29;padding:11px 0;gap:8px}.gymHistoryRow small{display:block;color:#a8b2aa;margin-top:4px}.gymHistoryRow button{min-width:44px;min-height:44px}.gymSimpleEx .guidedSet{margin:8px 0}.gymSimpleEx .exerciseHead{width:100%}
@@ -548,18 +569,77 @@ function refreshShiftSelect(){var keys=Object.keys(state.scheduleNames);if(!stat
 refreshShiftSelect();
 function schedData(){if(!state.schedules[state.shift]){var src=defaultSchedules[state.shift]||[];state.schedules[state.shift]=src.map(function(x){return {time:x[0],name:x[1],done:false}})}return state.schedules[state.shift]}
 function todoAge(t){var ms=Date.now()-(t.created||Date.now());return Math.max(0,Math.floor(ms/86400000))}
-function renderSchedule(){refreshShiftSelect();var a=schedData();var daily=a.length?a.map(function(x,i){return '<div class="swipe" data-task="'+i+'"><div class="swipe-bg"><div class="del"></div><div class="add"></div></div><div class="swipe-front"><div class="row"><div class="check '+(x.done?"done":"")+'">'+(x.done?"✓":"")+'</div><input class="timeInput" type="time" value="'+x.time+'"><input class="taskName" value="'+x.name+'" placeholder="Eintrag"><span class="taskTypeBadge">↻ täglich</span></div></div></div>'}).join(""):'<div class="muted small" style="padding:10px 2px">Keine täglichen Einträge.</div>';
-var todos=(state.todos||[]).filter(function(t){return !t.done});var todoHtml='<div class="todoSection"><div class="sectionLabel" style="margin-top:20px">Offene Aufgaben · unabhängig vom Tagesplan</div><div class="row between"><b>To-dos</b><span class="small muted">'+todos.length+' offen</span></div>'+(todos.length?todos.map(function(t){return '<div class="swipe" data-todo="'+t.id+'"><div class="swipe-bg"><div class="del"></div><div class="add"></div></div><div class="swipe-front"><div class="row"><div class="check"></div><div class="grow"><b>'+t.name+'</b><div class="todoAge">'+(todoAge(t)?"seit "+todoAge(t)+" Tagen":"heute erstellt")+'</div></div><button type="button" class="todoPlanBtn" data-plan="'+t.id+'">↳ Einplanen</button></div></div></div>'}).join(""):'<div class="muted small" style="padding:10px 0">Alles erledigt.</div>')+'</div>';
-$("#schedule").innerHTML=daily+todoHtml;
-$$("[data-task]").forEach(function(row){var i=+row.dataset.task,check=row.querySelector(".check"),ti=row.querySelector(".timeInput"),ni=row.querySelector(".taskName");check.onclick=function(e){e.stopPropagation();a[i].done=!a[i].done;save();renderSchedule()};ti.onchange=function(){a[i].time=this.value;save()};ni.onchange=function(){a[i].name=this.value;save()};bindSwipe(row,{left:function(){a[i].done=true;save();renderSchedule();toast("Erledigt ✓")},right:function(){a.splice(i,1);save();renderSchedule();toast("Eintrag gelöscht")}})});
-$$("[data-todo]").forEach(function(row){var id=+row.dataset.todo,t=state.todos.find(function(x){return x.id===id});function finish(){if(!t)return;t.done=true;t.doneAt=Date.now();state.todoHistory.push({id:t.id,name:t.name,created:t.created,doneAt:t.doneAt});save();renderSchedule();renderCoach();toast("To-do erledigt ✓")}row.querySelector(".check").onclick=finish;bindSwipe(row,{left:finish,right:function(){state.todos=state.todos.filter(function(x){return x.id!==id});save();renderSchedule();toast("To-do gelöscht")}})})}
-$$("[data-plan]").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=+this.dataset.plan,t=state.todos.find(function(x){return x.id===id});if(!t)return;var time=prompt("Uhrzeit für "+t.name+" (HH:MM)","12:00");if(time===null)return;if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))return toast("Uhrzeit als HH:MM eingeben");if(!state.plannedTodos)state.plannedTodos={};var d=selectedDate();if(!state.plannedTodos[d])state.plannedTodos[d]=[];if(!state.plannedTodos[d].some(function(x){return x.id===id}))state.plannedTodos[d].push({id:id,time:time});save();renderSchedule();toast("In Tagesablauf eingeplant")}});
+/* Unified Ablauf: persistent todos + daily profile tasks, date-specific checkmarks and completion timestamps. */
+function planNowTime(){var d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function planStampValue(v){if(!v)return "";if(typeof v==="string")return v;return v.time||""}
+if(!state.scheduleDoneByDate)state.scheduleDoneByDate={};
+if(!state.scheduleOrderByDate)state.scheduleOrderByDate={};
+function planKey(){return selectedDate()+"|"+state.shift}
+function dailyKey(x,i){if(!x.uid)x.uid="daily_"+Date.now()+"_"+i+"_"+Math.floor(Math.random()*100000);return x.uid}
+function planItems(){
+ var a=schedData(),d=selectedDate(),done=state.scheduleDoneByDate[d]||{};
+ var daily=a.map(function(x,i){return {key:dailyKey(x,i),type:"daily",obj:x,index:i,done:!!done[dailyKey(x,i)],stamp:planStampValue(done[dailyKey(x,i)])}});
+ var todos=(state.todos||[]).filter(function(x){return !x.done || x.doneDate===d}).map(function(x){return {key:"todo_"+x.id,type:"todo",obj:x,done:!!x.done,stamp:x.done?planStampValue(x.doneTime)||"--:--":""}});
+ var order=state.scheduleOrderByDate[planKey()]||[];
+ /* On each new day, the default is always daily tasks followed by all pending todos. */
+ var all=daily.concat(todos),rank={};order.forEach(function(k,i){rank[k]=i});
+ if(order.length)all.sort(function(x,y){var ax=rank[x.key],ay=rank[y.key];if(ax==null&&ay==null)return 0;if(ax==null)return 1;if(ay==null)return -1;return ax-ay});
+ return all;
+}
+function renderSchedule(){
+ refreshShiftSelect();var items=planItems(),html='';
+ items.forEach(function(it){var x=it.obj,locked=it.type==="daily"?x.locked!==false:false;
+ html+='<div class="planItem" data-plan-key="'+escapeHTML(it.key)+'" data-kind="'+it.type+'">'+
+ '<button type="button" class="planGrip" aria-label="Gedrückt halten und verschieben">⠿</button>'+
+ '<button type="button" class="planCheck '+(it.done?'done':'')+'" aria-label="Erledigt">'+(it.done?'✓':'')+'</button>'+
+ (it.type==="daily"?'<input class="planTime" type="time" value="'+escapeHTML(x.time||'12:00')+'" '+(locked?'disabled':'')+' aria-label="Uhrzeit">':'<span class="planTodoDot">•</span>')+
+ '<input class="planName" value="'+escapeHTML(x.name)+'" aria-label="Aufgabe" />'+
+ (it.done?'<label class="planStampWrap" title="Erledigungszeit bearbeiten"><span>✓</span><input class="planStamp" type="time" value="'+escapeHTML(it.stamp||planNowTime())+'" aria-label="Erledigt um"></label>':'')+
+ (it.type==="daily"?'<button type="button" class="planLock '+(locked?'locked':'')+'" aria-label="Uhrzeit sperren" title="Uhrzeit '+(locked?'entsperren':'sperren')+'">'+(locked?'🔒':'🔓')+'</button>':'<span class="planTodoTag">To-do</span>')+
+ '<button type="button" class="planDelete" aria-label="Eintrag löschen">×</button></div>';
+ });
+ $("#schedule").innerHTML=html||'<div class="muted small" style="padding:14px 0">Noch keine Einträge.</div>';
+ $$("#schedule .planItem").forEach(function(row){
+ var key=row.dataset.planKey,it=items.find(function(x){return x.key===key});if(!it)return;var x=it.obj;
+ row.querySelector('.planCheck').onclick=function(){
+ if(it.type==='daily'){var d=selectedDate();if(!state.scheduleDoneByDate[d])state.scheduleDoneByDate[d]={};if(state.scheduleDoneByDate[d][key])delete state.scheduleDoneByDate[d][key];else state.scheduleDoneByDate[d][key]={time:planNowTime()}}
+ else{if(x.done){x.done=false;delete x.doneDate;delete x.doneTime;state.todoHistory=state.todoHistory.filter(function(h){return h.id!==x.id||h.doneDate!==selectedDate()})}else{x.done=true;x.doneDate=selectedDate();x.doneTime=planNowTime();x.doneAt=Date.now();state.todoHistory.push({id:x.id,name:x.name,created:x.created,doneAt:x.doneAt,doneDate:x.doneDate,doneTime:x.doneTime})}}
+ save();renderSchedule();
+ };
+ var stampInput=row.querySelector('.planStamp');if(stampInput)stampInput.onchange=function(){var t=this.value;if(!t)return;if(it.type==='daily'){state.scheduleDoneByDate[selectedDate()][key]={time:t}}else{x.doneTime=t;var h=state.todoHistory.filter(function(h){return h.id===x.id&&h.doneDate===selectedDate()});if(h.length)h[h.length-1].doneTime=t}save();renderSchedule()};
+ row.querySelector('.planName').onchange=function(){x.name=this.value.trim()||x.name;save();renderSchedule()};
+ row.querySelector('.planDelete').onclick=function(){if(!confirm('"'+x.name+'" löschen?'))return;
+ if(it.type==='daily'){var a=schedData();var i=a.indexOf(x);if(i>=0)a.splice(i,1)}else state.todos=state.todos.filter(function(t){return t.id!==x.id});save();renderSchedule()};
+ if(it.type==='daily'){
+ row.querySelector('.planTime').onchange=function(){if(!x.locked){x.time=this.value;save()}};
+ row.querySelector('.planLock').onclick=function(){x.locked=x.locked===false?true:false;save();renderSchedule()};
+ }
+ });
+ bindPlanReorder();
+}
+function bindPlanReorder(){
+ var host=$("#schedule"),timer=null,active=null,startY=0,startX=0,moved=false;
+ $$("#schedule .planGrip").forEach(function(grip){
+ grip.addEventListener('pointerdown',function(e){if(e.button!==0)return;var row=grip.closest('.planItem');startX=e.clientX;startY=e.clientY;moved=false;
+ timer=setTimeout(function(){active=row;active.classList.add('dragging');grip.style.touchAction='none';try{grip.setPointerCapture(e.pointerId)}catch(err){}},320);
+ },{passive:true});
+ grip.addEventListener('pointermove',function(e){
+ if(!active){if(Math.abs(e.clientY-startY)>9||Math.abs(e.clientX-startX)>9)clearTimeout(timer);return}
+ e.preventDefault();moved=true;var target=document.elementFromPoint(e.clientX,e.clientY);var other=target&&target.closest('.planItem');
+ if(other&&other!==active&&other.parentNode===host){var r=other.getBoundingClientRect();host.insertBefore(active,e.clientY<r.top+r.height/2?other:other.nextSibling)}
+ },{passive:false});
+ function end(){clearTimeout(timer);if(!active)return;active.classList.remove('dragging');grip.style.touchAction='';
+ state.scheduleOrderByDate[planKey()]=$$("#schedule .planItem").map(function(el){return el.dataset.planKey});save();active=null;
+ }
+ grip.addEventListener('pointerup',end);grip.addEventListener('pointercancel',end);grip.addEventListener('lostpointercapture',end);
+ });
+}
 $("#shift").onchange=function(){state.shift=this.value;save();renderSchedule()};
 var taskKind="daily";
 function setTaskKind(k){taskKind=k;$("#pickDaily").classList.toggle("active",k==="daily");$("#pickTodo").classList.toggle("active",k==="todo");$("#taskTypeHelp").textContent=k==="daily"?"Erscheint jeden Tag in diesem Zeitprofil.":"Bleibt über Tage und Wochen offen, bis du es abhäkst.";$("#taskTimeField").style.display=k==="daily"?"block":"none"}
 $("#addTask").onclick=function(){taskKind="daily";$("#taskTitle").value="";$("#taskTime").value="12:00";setTaskKind("daily");$("#taskTypeModal").classList.add("open")};
 $("#closeTaskType").onclick=function(){$("#taskTypeModal").classList.remove("open")};$("#pickDaily").onclick=function(){setTaskKind("daily")};$("#pickTodo").onclick=function(){setTaskKind("todo")};
-$("#saveTaskType").onclick=function(){var name=$("#taskTitle").value.trim();if(!name)return toast("Aufgabe fehlt");if(taskKind==="daily")schedData().push({time:$("#taskTime").value||"12:00",name:name,done:false,type:"daily"});else state.todos.push({id:Date.now(),name:name,created:Date.now(),done:false});save();$("#taskTypeModal").classList.remove("open");renderSchedule();toast(taskKind==="daily"?"Täglich hinzugefügt":"To-do hinzugefügt")};
+$("#saveTaskType").onclick=function(){var name=$("#taskTitle").value.trim();if(!name)return toast("Aufgabe fehlt");if(taskKind==="daily")schedData().push({uid:"daily_"+Date.now(),time:$("#taskTime").value||"12:00",name:name,done:false,type:"daily",locked:true});else state.todos.push({id:Date.now(),name:name,created:Date.now(),done:false});save();$("#taskTypeModal").classList.remove("open");renderSchedule();toast(taskKind==="daily"?"Täglich hinzugefügt":"To-do hinzugefügt")};
 $("#newScheduleProfile").onclick=function(){$("#newScheduleName").value="";$("#scheduleProfileModal").classList.add("open")};
 $("#closeScheduleProfile").onclick=function(){$("#scheduleProfileModal").classList.remove("open")};
 $("#createScheduleProfile").onclick=function(){var name=$("#newScheduleName").value.trim();if(!name)return;var key="custom_"+Date.now();state.scheduleNames[key]=name;state.schedules[key]=[];state.shift=key;save();$("#scheduleProfileModal").classList.remove("open");renderSchedule();toast(name+" erstellt")};
