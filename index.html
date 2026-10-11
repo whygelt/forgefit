@@ -202,6 +202,29 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 #taskTypeModal #taskTime::-webkit-datetime-edit{display:flex!important;width:100%!important;justify-content:center!important;padding:0!important}
 #taskTypeModal #taskTime::-webkit-datetime-edit-fields-wrapper{margin:0 auto!important;padding:0!important}
 </style>
+<style id="ff-gym-player-v2">
+#gym.ffGymV2{padding-bottom:190px!important}
+#gym .ffGymDay{margin:7px 0 12px}
+#gym .ffGymDayLabel{font-size:11px;letter-spacing:.1em;font-weight:800;color:#8b9491;margin:0 0 9px}
+#gym .ffGymDayStrip{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible!important;gap:7px!important;margin:0!important}
+#gym .ffGymDayStrip .gymDay{width:100%;min-width:0!important;min-height:61px!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;border-radius:13px!important;padding:8px 3px!important}
+#gym .ffGymDayStrip .gymDay .ffDayNumber{font-size:11px;font-weight:850;letter-spacing:.04em;display:block}
+#gym .ffGymDayStrip .gymDay span:last-child{font-size:10px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block}
+#gym #guidedHero{display:none!important}
+#gym #gymTools{margin-top:20px!important}
+#gym .ffGymPlayer{position:fixed;z-index:90;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:calc(78px + env(safe-area-inset-bottom));background:#192018;border:1px solid #4a5e30;border-radius:16px;box-shadow:0 8px 28px #000a;padding:10px 11px 8px;max-width:700px;margin:0 auto}
+#gym .ffGymPlayerTop{display:flex;align-items:center;gap:9px;min-width:0}
+#gym .ffGymCover{width:42px;height:42px;flex:none;border-radius:10px;background:var(--accent);color:#0b1305;display:grid;place-items:center;font-size:24px;font-weight:900}
+#gym .ffGymTrack{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px}
+#gym .ffGymTrack strong{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#gym .ffGymTrack span{font-size:10px;color:#a4b19f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#gym .ffGymPlayer button{background:transparent!important;border:0!important;color:#eaf2e4!important;min-width:34px;padding:6px 3px;font-size:20px;flex:none}
+#gym .ffGymPlayer #ffGymPlay{color:var(--accent)!important;font-size:28px;min-width:40px}
+#gym .ffGymPlayerProgress{height:3px;background:#3a4537;border-radius:8px;overflow:hidden;margin-top:9px}
+#gym .ffGymPlayerProgress i{display:block;width:0;height:100%;background:var(--accent);transition:width .2s}
+#gym .ffGymManage .gymQuick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#gym .ffGymExercises .row button,#gym .ffGymCardio .row button{background:var(--accent)!important;color:#101510!important}
+</style>
 </head>
 <body><main><div class="globalDateNav" id="globalDateNav">
 <button id="globalPrev" aria-label="Vorheriger Tag">‹</button>
@@ -222,14 +245,15 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 <div class="schedule" id="schedule"></div><button class="addline" id="addTask">＋ Eintrag hinzufügen</button>
 </section>
 
-<section id="gym" class="page">
-<div class="guidedHero" id="guidedHero"><div class="guidedTitle">Bereit fürs Training?</div><div class="guidedSub" id="guidedSub">Dein persönlicher Trainingsablauf · Maschinen zuerst</div><div class="guidedProgress"><i id="guidedProgressFill"></i></div><div class="guidedHeroRow"><button class="primary" id="guidedStart">▶ TRAINING STARTEN</button><span id="guidedCount" class="small muted">Bereit</span></div></div>
+<section id="gym" class="page ffGymV2">
+<div class="ffGymDay"><div class="ffGymDayLabel">TRAININGSTAG</div><div class="ffGymDayStrip" id="gymWeek"></div></div>
 <div class="guidedSession" id="guidedSession" hidden></div>
 <span id="workoutName" hidden aria-hidden="true"></span>
-<div class="card" id="gymTools"><div class="row between"><h2 style="margin:0">Plan</h2><span class="small muted" id="gymCompactDay"></span></div><div class="gymQuick"><button id="gymEditPlan">✎ Bearbeiten</button><button id="gymAddExercise">＋ Übung</button><button id="gymSkip">↷ Pause</button></div><div id="gymStatus" class="small muted" style="margin-top:10px"></div><div id="gymEditor" hidden></div></div>
-
-<div class="card"><div class="row between"><h2 style="margin:0">Übungen</h2><button id="addCardio">＋ Cardio</button></div><div class="gymWeek" id="gymWeek"></div><div id="exercises"></div></div>
-<div class="card" id="cardioCard"><h2>Cardio heute</h2><div id="cardioLog" class="muted small">Noch kein Cardio.</div></div>
+<div class="card ffGymExercises"><div class="row between"><h2 style="margin:0">Übungen</h2><button id="gymAddExercise">＋ Übung</button></div><div id="exercises"></div></div>
+<div class="card ffGymCardio" id="cardioCard"><div class="row between"><h2 style="margin:0">Cardio</h2><button id="addCardio">＋ Cardio</button></div><div id="cardioLog" class="muted small">Noch kein Cardio.</div></div>
+<div class="card ffGymManage" id="gymTools"><div class="row between"><h2 style="margin:0">Plan verwalten</h2><span class="small muted" id="gymCompactDay"></span></div><div class="gymQuick"><button id="gymEditPlan">✎ Bearbeiten</button><button id="gymSkip">↷ Pause</button></div><div id="gymStatus" class="small muted" style="margin-top:10px"></div><div id="gymEditor" hidden></div></div>
+<div class="ffGymPlayer" id="ffGymPlayer"><div class="ffGymPlayerTop"><div class="ffGymCover">♫</div><div class="ffGymTrack"><strong id="ffGymTrackName">Training bereit</strong><span id="ffGymTrackMeta">Wähle deinen Trainingstag</span></div><button type="button" id="ffGymPrevious" aria-label="Vorherige Übung">⏮</button><button type="button" id="ffGymPlay" aria-label="Training starten oder fortsetzen">▶</button><button type="button" id="ffGymNext" aria-label="Nächste Übung">⏭</button></div><div class="ffGymPlayerProgress"><i id="guidedProgressFill"></i></div></div>
+<div class="guidedHero" id="guidedHero" hidden><div id="guidedSub" hidden></div><button id="guidedStart" hidden>Start</button><span id="guidedCount" hidden></span></div>
 </section>
 
 <section id="progress" class="page"><div class="weekSteps"></div>
@@ -883,7 +907,17 @@ var guidedSwaps={'Chest Press':['Pec Deck','Incline Chest Press'],'Incline Chest
 function guidedItems(){var d=selectedDate(),a=gymItems(d);return a.map(function(e,i){return [guidedChoices[d+'|'+i]||e[0],Number(e[1])||3]})}
 function guidedLogged(name){return state.logs.filter(function(l){return l.date===selectedDate()&&l.exercise===name})}
 function guidedPrevious(name){var found=null;state.logs.forEach(function(l){if(l.exercise===name&&l.date<selectedDate()&&(!found||l.date>found.date))found=l});return found}
-function guidedUpdateHero(){var items=guidedItems(),done=items.filter(function(e){return guidedLogged(e[0]).length>=e[1]}).length;document.getElementById('guidedProgressFill').style.width=(items.length?100*done/items.length:0)+'%';document.getElementById('guidedCount').textContent=done+' / '+items.length+' Übungen';document.getElementById('guidedSub').textContent=workouts[workoutIndexForDate(selectedDate())][0]+' · '+items.length+' Stationen · Schritt für Schritt';document.getElementById('guidedStart').textContent=guidedActive?'TRAINING FORTSETZEN':'▶ TRAINING STARTEN'}
+function ffGymPlayerSync(){
+ var player=document.getElementById('ffGymPlayer');if(!player)return;
+ var items=guidedItems(),i=Math.min(guidedStep,Math.max(0,items.length-1)),current=items[i];
+ var wi=workoutIndexForDate(selectedDate());
+ document.getElementById('ffGymTrackName').textContent=guidedActive?(current?current[0]:'Training abgeschlossen'):(workouts[wi]?workouts[wi][0]:'Training');
+ document.getElementById('ffGymTrackMeta').textContent=guidedActive?('Übung '+Math.min(i+1,items.length)+' von '+items.length+' · '+workouts[wi][0]):('Bereit · '+items.length+' Übungen');
+ document.getElementById('ffGymPlay').textContent=guidedActive?'Ⅱ':'▶';
+ player.classList.toggle('isPlaying',guidedActive);
+}
+function ffGymPlayerGo(delta){var items=guidedItems();if(!items.length)return;if(!guidedActive){document.getElementById('guidedStart').click();return}guidedStep=Math.max(0,Math.min(items.length,guidedStep+delta));guidedRender();}
+function guidedUpdateHero(){var items=guidedItems(),done=items.filter(function(e){return guidedLogged(e[0]).length>=e[1]}).length;document.getElementById('guidedProgressFill').style.width=(items.length?100*done/items.length:0)+'%';document.getElementById('guidedCount').textContent=done+' / '+items.length+' Übungen';document.getElementById('guidedSub').textContent=workouts[workoutIndexForDate(selectedDate())][0]+' · '+items.length+' Stationen · Schritt für Schritt';ffGymPlayerSync();document.getElementById('guidedStart').textContent=guidedActive?'TRAINING FORTSETZEN':'▶ TRAINING STARTEN'}
 function guidedRender(){var host=document.getElementById('guidedSession');guidedUpdateHero();if(!guidedActive){host.hidden=true;return}host.hidden=false;var items=guidedItems(),d=selectedDate();if(guidedStep>=items.length){var n=items.reduce(function(a,e){return a+guidedLogged(e[0]).length},0);host.innerHTML='<div class="guidedDone"><div class="check">✓</div><h2>TRAINING ABGESCHLOSSEN</h2><p>'+n+' protokollierte Sätze · '+items.length+' Stationen</p><div class="guidedNote">Ein ausgelassener Satz ist kein Versagen. Technik und Regelmäßigkeit zählen.</div><button class="primary" id="guidedFinish">Zurück zum Gym</button></div>';document.getElementById('guidedFinish').onclick=function(){guidedActive=false;guidedRender()};return}
 var item=items[guidedStep],name=item[0],total=item[1],guide=guidedGuide[name]||[name,'Ganzkörper / individuelle Übung',['Gerät nach Anleitung einstellen.','Bewegung kontrolliert und schmerzfrei ausführen.','Bei Unsicherheit Trainer im Studio fragen.'],'8–12','90 Sek.'];var old=guidedPrevious(name),existing=guidedLogged(name),older=state.logs.filter(function(l){return l.exercise===name&&l.date<d}).sort(function(a,b){return b.date.localeCompare(a.date)||Number(a.set)-Number(b.set)}),lastDate=older.length?older[0].date:null,lastSets=older.filter(function(l){return l.date===lastDate});var rows='';for(var i=1;i<=total;i++){var l=existing.filter(function(x){return Number(x.set)===i})[0];rows+='<div class="guidedSet"><b>'+i+'</b><input aria-label="Gewicht Satz '+i+'" data-gkg="'+i+'" type="number" inputmode="decimal" placeholder="kg" value="'+(l?l.kg:(lastSets.find(function(x){return Number(x.set)===i})||old||{}).kg||'')+'"><input aria-label="Wiederholungen Satz '+i+'" data-grep="'+i+'" type="number" inputmode="numeric" placeholder="Wdh." value="'+(l?l.reps:'')+'"><button data-gdone="'+i+'" class="'+(l?'done':'')+'" aria-label="Satz '+i+' abhaken">'+(l?'✓':'○')+'</button></div>'}
 var rate=localStorage.getItem('forgefit_guided_rate_'+d+'_'+name)||'';
@@ -896,6 +930,9 @@ showRestChoices();
 document.getElementById('guidedExit').onclick=function(){guidedActive=false;guidedRender()};document.getElementById('guidedBack').onclick=function(){guidedStep=Math.max(0,guidedStep-1);guidedRender()};document.getElementById('guidedNext').onclick=function(){guidedStep++;guidedRender();host.scrollIntoView({behavior:'smooth',block:'start'})};host.querySelectorAll('[data-gdone]').forEach(function(b){b.onclick=function(){var set=+this.dataset.gdone,kg=host.querySelector('[data-gkg="'+set+'"]').value,reps=host.querySelector('[data-grep="'+set+'"]').value,k=Number(String(kg).replace(',','.')),r=Number(reps),idx=state.logs.findIndex(function(l){return l.date===d&&l.exercise===name&&Number(l.set)===set});if(idx>=0){state.logs.splice(idx,1)}else{if(!(k>0&&r>0)){toast('Bitte Gewicht und Wiederholungen eingeben');return}state.logs.push({date:d,exercise:name,set:set,kg:k,reps:r,e1rm:k*(1+r/30)});state.gymDayByDate[d]=workoutIndexForDate(d)}save();guidedRender();renderProgress();renderGym()}});
 host.querySelectorAll('[data-grate]').forEach(function(b){b.onclick=function(){localStorage.setItem('forgefit_guided_rate_'+d+'_'+name,this.dataset.grate);guidedRender()}});host.querySelectorAll('[data-gswap]').forEach(function(b){b.onclick=function(){guidedChoices[d+'|'+guidedStep]=this.dataset.gswap;guidedRender()}})
 }
+document.getElementById('ffGymPlay').onclick=function(){if(guidedActive){guidedActive=false;guidedRender()}else{document.getElementById('guidedStart').click()}};
+document.getElementById('ffGymPrevious').onclick=function(){ffGymPlayerGo(-1)};
+document.getElementById('ffGymNext').onclick=function(){ffGymPlayerGo(1)};
 document.getElementById('guidedStart').onclick=function(){if(!guidedActive){guidedActive=true;guidedStep=0;var a=guidedItems();for(var i=0;i<a.length;i++){if(guidedLogged(a[i][0]).length<a[i][1]){guidedStep=i;break}}}guidedRender();document.getElementById('guidedSession').scrollIntoView({behavior:'smooth',block:'start'})};
 
 var cardioTypes=["Walking","Jogging","Cycling","Rope Jumping","Stairmaster","Crosstrainer","Rowing","Swimming","Custom"],selectedCardio="Walking";$("#cardioChoices").innerHTML=cardioTypes.map(function(x){return '<button data-cardio="'+x+'">'+x+'</button>'}).join("");$$("[data-cardio]").forEach(function(b){b.onclick=function(){selectedCardio=this.dataset.cardio;$$("[data-cardio]").forEach(function(x){x.classList.remove("primary")});this.classList.add("primary")}});$("#addCardio").onclick=function(){$("#cardioModal").classList.add("open")};$("#closeCardio").onclick=function(){$("#cardioModal").classList.remove("open")};$("#saveCardio").onclick=function(){(state.cardio[selectedDate()]||(state.cardio[selectedDate()]=[])).push({type:selectedCardio,minutes:+$("#cardioMinutes").value||0,rpe:Math.min(10,Math.max(1,+$("#cardioRpe").value||5))});save();$("#cardioModal").classList.remove("open");renderAll();toast("Cardio gespeichert")};
