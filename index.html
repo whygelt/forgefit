@@ -231,6 +231,13 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 #gym .ffGymPlayer{background:#101412!important;border:1px solid #313d32!important;padding:9px!important}#gym .ffGymPlayerTop{gap:5px!important}#gym .ffGymPlayer .ffModeBtn{font-size:10px!important;font-weight:850!important;min-width:48px!important;padding:9px 5px!important;border:1px solid #475a31!important;border-radius:10px!important;color:var(--accent)!important}#gym .ffGymPlayer #ffGymPlay{font-size:23px!important;min-width:29px!important}#gym .ffGymPlayer #ffGymPrevious,#gym .ffGymPlayer #ffGymNext{min-width:20px!important;font-size:24px!important}#gym .ffGymTrack strong{font-size:12px!important}#gym .ffGymTrack span{font-size:9px!important}
 #progress .stepTiers{display:block!important;margin-top:7px!important}#progress .ffXpLabels{display:flex;justify-content:space-between;gap:12px;font-size:12px;margin-top:12px;letter-spacing:.08em}#progress .ffXpTrack{height:22px;background:#242a2b;border:1px solid #3a4542;border-radius:99px;overflow:hidden}#progress .ffXpFill{height:100%;border-radius:99px;transition:width .5s ease,background .5s ease;background-image:linear-gradient(90deg,#ffffff22,transparent)!important}#progress .stepRank{font-size:13px!important}#progress #feelingAdd{font-size:11px!important}#progress .feelingScale{grid-template-columns:repeat(5,minmax(0,1fr))!important}#progress .feelBtn{min-height:47px}
 #gym .ffRest60{background:#d84747!important;color:#fff!important}
+</style><style id="forgefit-task-timer">
+#health .planItem{display:flex;flex-wrap:wrap;align-items:center;column-gap:7px;row-gap:2px;padding:9px 0!important}
+#health .ffTaskTimer{flex:0 0 100%;display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:0 29px 3px 0;min-height:35px}
+#health .ffTaskPlay,#health .ffTaskReset{border:1px solid #384431;border-radius:10px;background:#121711;color:#d7ff4c;min-width:42px;height:36px;font-size:18px;font-weight:800;touch-action:manipulation}
+#health .ffTaskClock{font-size:12px;color:#aeb9ad;font-variant-numeric:tabular-nums;min-width:135px;text-align:center}
+#health .ffTaskRunning .ffTaskPlay{background:#d7ff4c;color:#111;border-color:#d7ff4c}
+#health .ffTaskOvertime .ffTaskClock{color:#ffb05b}
 </style></head>
 <body><main><div class="globalDateNav" id="globalDateNav">
 <button id="globalPrev" aria-label="Vorheriger Tag">‹</button>
@@ -648,6 +655,15 @@ function planItems(){
  });
  return daily.concat(todos);
 }
+/* Ablauf focus timers: timestamp based, survives reload and background tabs. */
+if(!state.planTimers)state.planTimers={};
+function ffTimerId(key){return planKey()+"|"+key}
+function ffTimerData(key){var id=ffTimerId(key);return state.planTimers[id]||(state.planTimers[id]={elapsed:0,started:0,running:false})}
+function ffTimerSeconds(t){return Math.max(0,Math.floor((Number(t.elapsed)||0)+(t.running&&t.started?(Date.now()-t.started)/1000:0)))}
+function ffTimerFormat(seconds){seconds=Math.max(0,Math.floor(seconds));return String(Math.floor(seconds/3600)).padStart(2,'0')+':'+String(Math.floor(seconds%3600/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')}
+function ffTimerPause(key){var t=ffTimerData(key);if(t.running){t.elapsed=ffTimerSeconds(t);t.started=0;t.running=false;save()}}
+function ffTimerTick(){document.querySelectorAll('#schedule .planItem').forEach(function(row){var key=row.dataset.planKey,t=ffTimerData(key),clock=row.querySelector('.ffTaskClock'),button=row.querySelector('.ffTaskPlay');if(!clock||!button)return;var sec=ffTimerSeconds(t),duration=Number(row.dataset.duration)||30;clock.textContent=ffTimerFormat(sec)+' / '+duration+' Min';button.textContent=t.running?'Ⅱ':'▶';button.setAttribute('aria-label',t.running?'Timer pausieren':'Timer starten');row.classList.toggle('ffTaskRunning',!!t.running);row.classList.toggle('ffTaskOvertime',sec>=duration*60);});}
+setInterval(ffTimerTick,1000);
 function renderSchedule(){
  refreshShiftSelect();var items=planItems(),html='';
  items.forEach(function(it){var x=it.obj;
@@ -658,12 +674,16 @@ function renderSchedule(){
  '<input class="planName" value="'+escapeHTML(x.name)+'" aria-label="Aufgabe" />'+
  (it.done?'<label class="planStampWrap" title="Erledigungszeit bearbeiten"><span>✓</span><input class="planStamp" type="time" value="'+escapeHTML(it.stamp||planNowTime())+'" aria-label="Erledigt um"></label>':'')+
  (it.type==="daily"?'<input class="planDuration" type="number" inputmode="numeric" min="5" max="600" step="5" value="'+planDuration(x)+'" aria-label="Dauer in Minuten" title="Dauer in Minuten">':'<span class="planTodoTag">To-do</span>')+
- '<button type="button" class="planDelete" aria-label="Eintrag löschen">×</button></div>';
+ '<button type="button" class="planDelete" aria-label="Eintrag löschen">×</button>'+
+ '<div class="ffTaskTimer"><button type="button" class="ffTaskPlay" aria-label="Timer starten">▶</button><span class="ffTaskClock">00:00:00</span><button type="button" class="ffTaskReset" aria-label="Timer zurücksetzen">↺</button></div></div>';
  });
  $("#schedule").innerHTML=html||'<div class="muted small" style="padding:14px 0">Noch keine Einträge.</div>';
  $$("#schedule .planItem").forEach(function(row){
- var key=row.dataset.planKey,it=items.find(function(x){return x.key===key});if(!it)return;var x=it.obj;
+ var key=row.dataset.planKey,it=items.find(function(x){return x.key===key});if(!it)return;var x=it.obj;row.dataset.duration=planDuration(x);
+ row.querySelector('.ffTaskPlay').onclick=function(){var t=ffTimerData(key);if(t.running)ffTimerPause(key);else{t.started=Date.now();t.running=true;save()}ffTimerTick()};
+ row.querySelector('.ffTaskReset').onclick=function(){if(!confirm('Timer für '+x.name+' zurücksetzen?'))return;state.planTimers[ffTimerId(key)]={elapsed:0,started:0,running:false};save();ffTimerTick()};
  row.querySelector('.planCheck').onclick=function(){
+ if(!it.done)ffTimerPause(key);
  if(it.type==='daily'){var d=selectedDate();if(!state.scheduleDoneByDate[d])state.scheduleDoneByDate[d]={};if(state.scheduleDoneByDate[d][key])delete state.scheduleDoneByDate[d][key];else state.scheduleDoneByDate[d][key]={time:planNowTime()}}
  else{if(x.done){x.done=false;delete x.doneDate;delete x.doneTime;state.todoHistory=state.todoHistory.filter(function(h){return h.id!==x.id||h.doneDate!==selectedDate()})}else{x.done=true;x.doneDate=selectedDate();x.doneTime=planNowTime();x.doneAt=Date.now();state.todoHistory.push({id:x.id,name:x.name,created:x.created,doneAt:x.doneAt,doneDate:x.doneDate,doneTime:x.doneTime})}}
  save();renderSchedule();
@@ -677,6 +697,7 @@ function renderSchedule(){
  row.querySelector('.planDuration').onchange=function(){x.duration=Math.max(5,Math.min(600,Number(this.value)||30));save();renderSchedule()};
  }
  });
+ ffTimerTick();
  // Time-based order replaces unreliable iOS drag-and-drop.
 }
 function bindPlanReorder(){
