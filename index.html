@@ -238,7 +238,29 @@ background:transparent!important;border:0!important;padding:8px 0!important;bord
 #health .ffTaskClock{font-size:12px;color:#aeb9ad;font-variant-numeric:tabular-nums;min-width:135px;text-align:center}
 #health .ffTaskRunning .ffTaskPlay{background:#d7ff4c;color:#111;border-color:#d7ff4c}
 #health .ffTaskOvertime .ffTaskClock{color:#ffb05b}
-</style></head>
+</style>
+<style id="forgefit-big-buttons-20261015">
+/* Large, unmistakable touch controls: no emoji icons. */
+#health .planItem{display:grid!important;grid-template-columns:62px 82px minmax(0,1fr) 66px 54px!important;gap:9px 8px!important;align-items:center!important;padding:16px 0!important;min-width:0}
+#health .planCheck{width:60px!important;height:60px!important;min-width:60px!important;border:2px solid #526047!important;border-radius:17px!important;background:#151c15!important;color:var(--accent)!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:2px!important}
+#health .planCheck.done{background:var(--accent)!important;color:#0a1105!important;border-color:var(--accent)!important}
+#health .ffCheckGlyph{font-size:29px;line-height:1;font-weight:900}
+#health .ffCheckText{font-size:9px;font-weight:900;letter-spacing:.06em;margin-top:2px}
+#health .planTime{width:100%!important;min-width:0!important;padding:9px 1px!important;text-align:center!important;font-size:14px!important;font-weight:850!important}
+#health .planName{min-width:0!important;width:100%!important;font-size:15px!important}
+#health .planDuration{width:100%!important;min-width:0!important;height:52px!important;border-radius:13px!important;text-align:center!important;font-size:15px!important;font-weight:850!important}
+#health .planDelete{width:54px!important;min-width:0!important;height:52px!important;border:1px solid #4d3434!important;border-radius:13px!important;background:#1c1314!important;color:#ffa4a4!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;padding:2px!important}
+#health .planDelete span{font-size:27px;line-height:24px;font-weight:850}#health .planDelete small{font-size:8px;letter-spacing:-.03em;font-weight:800}
+#health .ffTaskTimer{grid-column:2 / -1!important;display:grid!important;grid-template-columns:minmax(78px,1fr) minmax(92px,1.4fr) minmax(78px,1fr)!important;gap:8px!important;padding:0!important;min-height:62px!important;align-items:stretch!important}
+#health .ffTaskPlay,#health .ffTaskReset{width:100%!important;height:60px!important;border:2px solid #4c6434!important;border-radius:15px!important;background:#172216!important;color:var(--accent)!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px!important;min-width:0!important}
+#health .ffTaskPlay{background:var(--accent)!important;color:#101700!important;border-color:var(--accent)!important}
+#health .ffTaskRunning .ffTaskPlay{background:#293c17!important;color:var(--accent)!important}
+#health .ffBtnGlyph{font-size:25px;line-height:1;font-weight:900}#health .ffBtnText{font-size:10px;letter-spacing:.08em;font-weight:900}
+#health .ffTaskClock{display:flex!important;align-items:center;justify-content:center;text-align:center!important;min-width:0!important;font-size:11px!important;line-height:1.5!important;border:1px solid #333c32;border-radius:14px;background:#111611;padding:4px!important;font-variant-numeric:tabular-nums}
+#health .planStampWrap{grid-column:3 / 5!important;grid-row:auto!important;min-width:0}
+@media(max-width:390px){#health .planItem{grid-template-columns:54px 73px minmax(0,1fr) 54px 45px!important;gap:6px!important}#health .planCheck{width:53px!important;min-width:53px!important;height:55px!important}#health .planDelete{width:45px!important}#health .planDelete small{font-size:7px}#health .planName{font-size:13px!important}#health .ffTaskTimer{grid-template-columns:1fr 1.2fr 1fr!important}}
+</style>
+</head>
 <body><main><div class="globalDateNav" id="globalDateNav">
 <button id="globalPrev" aria-label="Vorheriger Tag">‹</button>
 <div id="globalDateDays" class="globalDateDays"></div>
@@ -663,20 +685,20 @@ function ffTimerData(key){var id=ffTimerId(key);return state.planTimers[id]||(st
 function ffTimerSeconds(t){return Math.max(0,Math.floor((Number(t.elapsed)||0)+(t.running&&t.started?(Date.now()-t.started)/1000:0)))}
 function ffTimerFormat(seconds){seconds=Math.max(0,Math.floor(seconds));return String(Math.floor(seconds/3600)).padStart(2,'0')+':'+String(Math.floor(seconds%3600/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')}
 function ffTimerPause(key){var t=ffTimerData(key);if(t.running){t.elapsed=ffTimerSeconds(t);t.started=0;t.running=false;save()}}
-function ffTimerTick(){document.querySelectorAll('#schedule .planItem').forEach(function(row){var key=row.dataset.planKey,t=ffTimerData(key),clock=row.querySelector('.ffTaskClock'),button=row.querySelector('.ffTaskPlay');if(!clock||!button)return;var sec=ffTimerSeconds(t),duration=Number(row.dataset.duration)||30;clock.textContent=ffTimerFormat(sec)+' / '+duration+' Min';button.textContent=t.running?'Ⅱ':'▶';button.setAttribute('aria-label',t.running?'Timer pausieren':'Timer starten');row.classList.toggle('ffTaskRunning',!!t.running);row.classList.toggle('ffTaskOvertime',sec>=duration*60);});}
+function ffTimerTick(){document.querySelectorAll('#schedule .planItem').forEach(function(row){var key=row.dataset.planKey,t=ffTimerData(key),clock=row.querySelector('.ffTaskClock'),button=row.querySelector('.ffTaskPlay');if(!clock||!button)return;var sec=ffTimerSeconds(t),duration=Number(row.dataset.duration)||30;clock.textContent=ffTimerFormat(sec)+' / '+duration+' Min';button.innerHTML=t.running?'<span class="ffBtnGlyph">Ⅱ</span><span class="ffBtnText">PAUSE</span>':'<span class="ffBtnGlyph">▶</span><span class="ffBtnText">START</span>';button.setAttribute('aria-label',t.running?'Timer pausieren':'Timer starten');row.classList.toggle('ffTaskRunning',!!t.running);row.classList.toggle('ffTaskOvertime',sec>=duration*60);});}
 setInterval(ffTimerTick,1000);
 function renderSchedule(){
  refreshShiftSelect();var items=planItems(),html='';
  items.forEach(function(it){var x=it.obj;
  html+='<div class="planItem" data-plan-key="'+escapeHTML(it.key)+'" data-kind="'+it.type+'">'+
 
- '<button type="button" class="planCheck '+(it.done?'done':'')+'" aria-label="Erledigt">'+(it.done?'✓':'')+'</button>'+
+ '<button type="button" class="planCheck '+(it.done?'done':'')+'" aria-label="Erledigt"><span class="ffCheckGlyph">'+(it.done?'✓':'○')+'</span><span class="ffCheckText">'+(it.done?'FERTIG':'CHECK')+'</span></button>'+
  (it.type==="daily"?'<input class="planTime" type="time" value="'+escapeHTML(it.displayTime||x.time||'12:00')+'" aria-label="Uhrzeit">':'<span class="planTodoDot">•</span>')+
  '<input class="planName" value="'+escapeHTML(x.name)+'" aria-label="Aufgabe" />'+
  (it.done?'<label class="planStampWrap" title="Erledigungszeit bearbeiten"><span>✓</span><input class="planStamp" type="time" value="'+escapeHTML(it.stamp||planNowTime())+'" aria-label="Erledigt um"></label>':'')+
  (it.type==="daily"?'<input class="planDuration" type="number" inputmode="numeric" min="5" max="600" step="5" value="'+planDuration(x)+'" aria-label="Dauer in Minuten" title="Dauer in Minuten">':'<span class="planTodoTag">To-do</span>')+
- '<button type="button" class="planDelete" aria-label="Eintrag löschen">×</button>'+
- '<div class="ffTaskTimer"><button type="button" class="ffTaskPlay" aria-label="Timer starten">▶</button><span class="ffTaskClock">00:00:00</span><button type="button" class="ffTaskReset" aria-label="Timer zurücksetzen">↺</button></div></div>';
+ '<button type="button" class="planDelete" aria-label="Eintrag löschen"><span>×</span><small>LÖSCHEN</small></button>'+
+ '<div class="ffTaskTimer"><button type="button" class="ffTaskPlay" aria-label="Timer starten"><span class="ffBtnGlyph">▶</span><span class="ffBtnText">START</span></button><span class="ffTaskClock">00:00:00</span><button type="button" class="ffTaskReset" aria-label="Timer zurücksetzen"><span class="ffBtnGlyph">↺</span><span class="ffBtnText">RESET</span></button></div></div>';
  });
  $("#schedule").innerHTML=html||'<div class="muted small" style="padding:14px 0">Noch keine Einträge.</div>';
  $$("#schedule .planItem").forEach(function(row){
